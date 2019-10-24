@@ -103,13 +103,13 @@ function init() {
     camera.position.z = 20;
     camera.lookAt(scene.position);
 
-    const flyControls = new THREE.FlyControls(camera, renderer.domElement);
-    console.log('fly', flyControls);
+    // const flyControls = new THREE.FlyControls(camera, renderer.domElement);
+    // console.log('fly', flyControls);
 
-    // const controls = new THREE.OrbitControls(camera, renderer.domElement); // 카메라와 마우스 상호작용을 위해 OrbitControls를 설정합니다.
-    // controls.rotateSpeed = 1.0; // 마우스로 카메라를 회전시킬 속도입니다. 기본값(Float)은 1입니다.
-    // controls.zoomSpeed = 1.5; // 마우스 휠로 카메라를 줌 시키는 속도 입니다. 기본값(Float)은 1입니다.
-    // controls.panSpeed = 1.0; // 패닝 속도 입니다. 기본값(Float)은 1입니다.
+    const controls = new THREE.OrbitControls(camera, renderer.domElement); // 카메라와 마우스 상호작용을 위해 OrbitControls를 설정합니다.
+    controls.rotateSpeed = 1.0; // 마우스로 카메라를 회전시킬 속도입니다. 기본값(Float)은 1입니다.
+    controls.zoomSpeed = 1.5; // 마우스 휠로 카메라를 줌 시키는 속도 입니다. 기본값(Float)은 1입니다.
+    controls.panSpeed = 1.0; // 패닝 속도 입니다. 기본값(Float)은 1입니다.
     // controls.keys = {
     //     LEFT: 37, //left arrow
     //     UP: 38, // up arrow
@@ -117,7 +117,7 @@ function init() {
     //     BOTTOM: 40 // down arrow
     // }
     // controls.keyPanSpeed = 20;
-
+``
     // document.addEventListener('keydown', (e) => {
     //     const rotSpeed = 0.1;
     //     const x = camera.position.x;
