@@ -76,14 +76,10 @@ function init() {
         table.position.z = z;
         table.castShadow = true;
 
-        const tableLegGeometry = createBoxGeometry( 1, 1, 5 );
-        const tableLegMaterial = new THREE.MeshLambertMaterial({color: 0xD0AF7A});
-        addLegToTable(table, tableLegGeometry, tableLegMaterial);
-
-        return table;
+        return addLegToTable(table);
     }
 
-    function createTableLegMesh(tableMesh, tableLegGeometry, tableLegMaterial, x, y, z) {
+    function createTableLegMesh(tableLegGeometry, tableLegMaterial, x, y, z) {
         const tableLegMesh = new THREE.Mesh(tableLegGeometry, tableLegMaterial);
         tableLegMesh.position.x = x;
         tableLegMesh.position.y = y;
@@ -91,16 +87,21 @@ function init() {
         return tableLegMesh
     }
 
-    function addLegToTable(tableMesh, tableLegGeometry, tableLegMaterial) {
-        const tableLeg1 = createTableLegMesh(tableMesh, tableLegGeometry, tableLegMaterial, 4.5, -2, -2.7);
-        const tableLeg2 = createTableLegMesh(tableMesh, tableLegGeometry, tableLegMaterial, -4.5, -2, -2.7);
-        const tableLeg3 = createTableLegMesh(tableMesh, tableLegGeometry, tableLegMaterial, -4.5, 2, -2.7);
-        const tableLeg4 = createTableLegMesh(tableMesh, tableLegGeometry, tableLegMaterial, 4.5, 2, -2.7);
+    function addLegToTable(tableMesh) {
+        const tableLegGeometry = createBoxGeometry( 1, 1, 5 );
+        const tableLegMaterial = new THREE.MeshLambertMaterial({color: 0xD0AF7A});
+
+        const tableLeg1 = createTableLegMesh(tableLegGeometry, tableLegMaterial, 4.5, -2, -2.7);
+        const tableLeg2 = createTableLegMesh(tableLegGeometry, tableLegMaterial, -4.5, -2, -2.7);
+        const tableLeg3 = createTableLegMesh(tableLegGeometry, tableLegMaterial, -4.5, 2, -2.7);
+        const tableLeg4 = createTableLegMesh(tableLegGeometry, tableLegMaterial, 4.5, 2, -2.7);
 
         tableMesh.add(tableLeg1);
         tableMesh.add(tableLeg2);
         tableMesh.add(tableLeg3);
         tableMesh.add(tableLeg4);
+
+        return tableMesh;
     }
 }
 window.onload = init();
