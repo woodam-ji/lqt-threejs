@@ -4,15 +4,6 @@
 
 <head>
     <title>Example 09.05 - Fly controls </title>
-    <script type="text/javascript" src="./libs/three.js"></script>
-    <script type="text/javascript" src="./libs/OBJLoader.js"></script>
-    <script type="text/javascript" src="./libs/MTLLoader.js"></script>
-    <script type="text/javascript" src="./libs/OBJMTLLoader.js"></script>
-
-    <script type="text/javascript" src="./libs/stats.js"></script>
-    <script type="text/javascript" src="./libs/dat.gui.js"></script>
-    <script type="text/javascript" src="./libs/chroma.js"></script>
-    <script type="text/javascript" src="./libs/FlyControls.js"></script>
 
     <style>
         body {
@@ -31,6 +22,16 @@
     <div id="WebGL-output">
     </div>
 
+
+    <script type="text/javascript" src="./libs/three.js"></script>
+    <!-- <script type="text/javascript" src="./libs/OBJLoader.js"></script> -->
+    <script type="text/javascript" src="./libs/MTLLoader.js"></script>
+    <script type="text/javascript" src="./libs/OBJMTLLoader.js"></script>
+
+    <script type="text/javascript" src="./libs/stats.js"></script>
+    <script type="text/javascript" src="./libs/dat.gui.js"></script>
+    <script type="text/javascript" src="./libs/chroma.js"></script>
+    <script type="text/javascript" src="./libs/FlyControls.js"></script>
     <!-- Javascript code that runs our Three.js examples -->
     <script type="text/javascript">
         // once everything is loaded, we run our Three.js stuff.
@@ -50,7 +51,7 @@
 
             // create a render and set the size
             var webGLRenderer = new THREE.WebGLRenderer();
-            webGLRenderer.setClearColor(new THREE.Color(0x000, 1.0));
+            webGLRenderer.setClearColor(new THREE.Color(0xfff, 1.0));
             webGLRenderer.setSize(window.innerWidth, window.innerHeight);
             webGLRenderer.shadowMapEnabled = true;
 
@@ -66,7 +67,7 @@
             flyControls.movementSpeed = 25;
             flyControls.domElement = document.querySelector("#WebGL-output");
             flyControls.rollSpeed = Math.PI / 24;
-            flyControls.autoForward = true;
+            flyControls.autoForward = false;
             flyControls.dragToLook = false;
 
             var ambientLight = new THREE.AmbientLight(0x383838);

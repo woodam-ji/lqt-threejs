@@ -32,7 +32,6 @@ function init() {
     var rectLight = new THREE.RectAreaLight( 0xffffff, intensity,  width, height );
     rectLight.position.set( 0, 0, 20 );
     rectLight.lookAt( 0, 0, 0 );
-
     scene.add( rectLight );
     // no shadow support
     // Only MeshStandardMaterial and MeshPhysicalMaterial are supported.
@@ -45,21 +44,7 @@ function init() {
     var plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
 
-    const textureLoader = new THREE.TextureLoader();
-
-    const textureFlare0 = textureLoader.load( "./lensflare0.png" );
-    const textureFlare1 = textureLoader.load( "./lensflare2.png" );
-    const textureFlare2 = textureLoader.load( "./lensflare3.png" );
-
-    const lensflare = new THREE.Lensflare();
-    // LensflareElement( texture : Texture, size : Float, distance : Float, color : Color )
-    lensflare.addElement( new THREE.LensflareElement( textureFlare0, 512, 0 ) );
-    lensflare.addElement( new THREE.LensflareElement( textureFlare1, 512, 0 ) );
-    lensflare.addElement( new THREE.LensflareElement( textureFlare2, 60, 0.6 ) );
-
-    rectLight.add( lensflare );
-    // 빛에 lensflare를 add
-
+    // plane.rotation.x = -0.5 * Math.PI;
     plane.position.z = -5;
     scene.add(plane);
 
@@ -88,9 +73,17 @@ function init() {
     document.getElementById("threejs_scene").appendChild(renderer.domElement);
 
     document.getElementById('toggleLight').addEventListener('click', () => {
-        const isVisible = rectLight.visible;
+        const currentIntensity = rectLight.intensity;
+        const updateIntensity = currentIntensity > 0 ? 0 : intensity;
+        const updateColor = currentIntensity > 0 ? 0x000000 : 0xffffff;
+        // ambiLight.intensity = intensity;
+        // rectLight = updateIntensity;
+        // rectLight.color = '#000';
+        // rectLight
+        console.log(rectLight.color)
+        rectLight.color = new THREE.Color(updateColor);
+        rectLight.intensity = updateIntensity;
 
-        rectLight.visible = !isVisible;
     });
 
     var renderScene = new function renderScene() {
@@ -99,24 +92,21 @@ function init() {
         renderer.render(scene,camera);
     };
 
-    // const light = new THREE.PointLight( 0xffffff, 1.5, 2000 );
+    // var light = new THREE.PointLight( 0xffffff, 1.5, 2000 );
     //
-    // const textureLoader = new THREE.TextureLoader();
+    // var textureLoader = new THREE.TextureLoader();
     //
-    // const textureFlare0 = textureLoader.load( "./lensflare0.png" );
-    // const textureFlare1 = textureLoader.load( "./lensflare2.png" );
-    // const textureFlare2 = textureLoader.load( "./lensflare3.png" );
+    // var textureFlare0 = textureLoader.load( "./lensflare0.png" );
+    // var textureFlare1 = textureLoader.load( "./lensflare2.png" );
+    // var textureFlare2 = textureLoader.load( "./lensflare3.png" );
     //
-    // const lensflare = new THREE.Lensflare();
+    // var lensflare = new THREE.Lensflare();
     //
     // lensflare.addElement( new THREE.LensflareElement( textureFlare0, 512, 0 ) );
     // lensflare.addElement( new THREE.LensflareElement( textureFlare1, 512, 0 ) );
     // lensflare.addElement( new THREE.LensflareElement( textureFlare2, 60, 0.6 ) );
     //
     // light.add( lensflare );
-    //
-    // light.position.y = 50;
-    // scene.add(light);
 
     function createTextureMesh(geometry, imageFile) {
         /**
