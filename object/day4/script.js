@@ -92,11 +92,47 @@ function init() {
     rightHand.position.y = -2;
     rightArm.add(rightHand);
 
+    const legGeometry = new THREE.CylinderGeometry(0.7, 0.7, 10, 32);
+    const legMaterial = new THREE.MeshBasicMaterial({color: '#FFE4C4'});
+    const leg = new THREE.Mesh( legGeometry, legMaterial );
+    const leftLeg = leg.clone();
+    const rightLeg = leg.clone();
+    leftLeg.position.x = -1.4;
+    leftLeg.position.y = -3;
+    rightLeg.position.x = 1.4;
+    rightLeg.position.y = -3;
+
+    const pantsGeometry = new THREE.CylinderGeometry(1.6, 1.2, 5, 32);
+    const pantsMaterial = new THREE.MeshBasicMaterial({color: '#fbbc03'});
+    const pants = new THREE.Mesh( pantsGeometry, pantsMaterial );
+    const leftLegPants = pants.clone();
+    const rightLegPants = pants.clone();
+    leftLeg.add(leftLegPants);
+    rightLeg.add(rightLegPants);
+
+    const footGeometry = new THREE.BoxGeometry(2.5, 1, 3.5);
+    const footMaterial = new THREE.MeshBasicMaterial({color: '#000000'});
+    const foot = new THREE.Mesh( footGeometry, footMaterial );
+    const leftFoot = foot.clone();
+    const rightFoot = foot.clone();
+    leftFoot.position.z = 1;
+    leftFoot.position.y = -5;
+    rightFoot.position.z = 1;
+    rightFoot.position.y = -5;
+    leftLeg.add(leftFoot);
+    rightLeg.add(rightFoot);
+
     body.add(rightArm);
     body.add(leftArm);
+    body.add(leftLeg);
+    body.add(rightLeg);
 
     head.add(body);
 
+    const cloneA = head.clone();
+    cloneA.position.x = 10;
+
+    scene.add(cloneA);
     scene.add(head);
 
     document.getElementById("threejs_scene").appendChild(renderer.domElement);
