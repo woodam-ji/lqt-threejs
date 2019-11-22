@@ -23,14 +23,37 @@ function init() {
 
     scene.add(spotLight);
 
+
+
+    const boy = makeHuman('#FF00BF', false);
+    const girl = makeHuman('#BC5E00', true);
+    girl.position.x = 10;
+
+    scene.add(boy);
+    scene.add(girl);
+
+    document.getElementById("threejs_scene").appendChild(renderer.domElement);
+    const controls = new THREE.OrbitControls( camera, renderer.domElement );
+    controls.update();
+
+    var renderScene = new function renderScene() {
+        requestAnimationFrame(renderScene);
+        renderer.render(scene,camera);
+    };
+
+}
+
+const makeHuman = (hairColor, isWoman) => {
     const headGeometry = new THREE.SphereGeometry(4,32,32);
     const headMaterial = new THREE.MeshBasicMaterial({color: "#FFE4C4"});
     const head = new THREE.Mesh(headGeometry, headMaterial);
 
     const hairGeometry = new THREE.SphereGeometry(4.01,32,32,0,6.3,0,1.5);
-    const hairMaterial = new THREE.MeshBasicMaterial({color: "#FF00BF"});
+    const hairMaterial = new THREE.MeshBasicMaterial({color: hairColor || "#424242"});
     const hair = new THREE.Mesh(hairGeometry, hairMaterial);
     head.add(hair);
+
+    if (isWoman) makeLongHair(head, hairColor);
 
     const eyeGeometry = new THREE.SphereGeometry(0.5,32,32);
     const eyeMaterial = new THREE.MeshBasicMaterial({color: "#424242"});
@@ -102,13 +125,8 @@ function init() {
     rightLeg.position.x = 1.4;
     rightLeg.position.y = -3;
 
-    const pantsGeometry = new THREE.CylinderGeometry(1.6, 1.2, 5, 32);
-    const pantsMaterial = new THREE.MeshBasicMaterial({color: '#fbbc03'});
-    const pants = new THREE.Mesh( pantsGeometry, pantsMaterial );
-    const leftLegPants = pants.clone();
-    const rightLegPants = pants.clone();
-    leftLeg.add(leftLegPants);
-    rightLeg.add(rightLegPants);
+    if (isWoman) makeSkirt(body);
+    else makePants(leftLeg, rightLeg);
 
     const footGeometry = new THREE.BoxGeometry(2.5, 1, 3.5);
     const footMaterial = new THREE.MeshBasicMaterial({color: '#000000'});
@@ -129,21 +147,42 @@ function init() {
 
     head.add(body);
 
-    const cloneA = head.clone();
-    cloneA.position.x = 10;
+    return head;
+};
 
-    scene.add(cloneA);
-    scene.add(head);
+const makeLongHair = (head, color) => {
+    const longHairGeometry = new THREE.SphereGeometry(1, 32, 32);
+    const longHairMaterial = new THREE.MeshBasicMaterial({color: color || "#424242"});
+    const longHair = new THREE.Mesh(longHairGeometry, longHairMaterial);
+    longHair.position.z = -4.5;
 
-    document.getElementById("threejs_scene").appendChild(renderer.domElement);
-    const controls = new THREE.OrbitControls( camera, renderer.domElement );
-    controls.update();
+    const longHairTailGeometry = new THREE.CylinderGeometry(0.5, 0.8, 7, 32);
+    const longHairTailMaterial = new THREE.MeshBasicMaterial({color: color || "#424242"});
+    const longHairTail = new THREE.Mesh(longHairTailGeometry, longHairTailMaterial);
+    longHairTail.position.z = -5.5;
+    longHairTail.position.y = -4;
+    longHairTail.rotation.x = -50;
+    head.add(longHairTail);
+    head.add(longHair);
+};
 
-    var renderScene = new function renderScene() {
-        requestAnimationFrame(renderScene);
-        renderer.render(scene,camera);
-    };
+const makePants = (leftLeg, rightLeg) => {
+    const pantsGeometry = new THREE.CylinderGeometry(1.6, 1.2, 5, 32);
+    const pantsMaterial = new THREE.MeshBasicMaterial({color: '#fbbc03'});
+    const pants = new THREE.Mesh( pantsGeometry, pantsMaterial );
+    const leftLegPants = pants.clone();
+    const rightLegPants = pants.clone();
+    leftLeg.add(leftLegPants);
+    rightLeg.add(rightLegPants);
+};
 
-}
+const makeSkirt = (body) => {
+    const skirtGeometry = new THREE.CylinderGeometry(3, 3.2, 2.5, 32);
+    const skirtMaterial = new THREE.MeshBasicMaterial({color: "#FBEFFB"});
+    const skirt = new THREE.Mesh(skirtGeometry, skirtMaterial);
+    skirt.position.y = -3.5;
+    body.add(skirt)
+};
+
 window.onload = init();
 
