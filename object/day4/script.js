@@ -25,8 +25,8 @@ function init() {
 
 
 
-    const boy = makeHuman('#FF00BF', false);
-    const girl = makeHuman('#BC5E00', true);
+    const boy = makeHuman('#FF00BF', false, renderer, scene, camera, true);
+    const girl = makeHuman('#BC5E00', true, renderer, scene, camera, false);
     girl.position.x = 10;
 
     scene.add(boy);
@@ -36,14 +36,9 @@ function init() {
     const controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.update();
 
-    var renderScene = new function renderScene() {
-        requestAnimationFrame(renderScene);
-        renderer.render(scene,camera);
-    };
-
 }
 
-const makeHuman = (hairColor, isWoman) => {
+const makeHuman = (hairColor, isWoman, renderer, scene, camera, isChangeObjectDirection) => {
     const headGeometry = new THREE.SphereGeometry(4,32,32);
     const headMaterial = new THREE.MeshBasicMaterial({color: "#FFE4C4"});
     const head = new THREE.Mesh(headGeometry, headMaterial);
@@ -147,6 +142,27 @@ const makeHuman = (hairColor, isWoman) => {
 
     head.add(body);
 
+    new function renderScene() {
+        requestAnimationFrame(renderScene);
+        if (leftArm.rotation.x > 0.3 || leftArm.rotation.x < -0.3) isChangeObjectDirection = !isChangeObjectDirection;
+
+        if (isChangeObjectDirection) {
+            leftArm.rotation.x += 0.01;
+            rightArm.rotation.x -= 0.01;
+            leftLeg.rotation.x -= 0.01;
+            rightLeg.rotation.x -= -0.01;
+        } else {
+            leftArm.rotation.x -= 0.01;
+            rightArm.rotation.x += 0.01;
+            leftLeg.rotation.x += 0.01;
+            rightLeg.rotation.x += -0.01;
+        }
+
+        head.position.z += 0.1;
+
+        renderer.render(scene,camera);
+    };
+
     return head;
 };
 
@@ -167,7 +183,7 @@ const makeLongHair = (head, color) => {
 };
 
 const makePants = (leftLeg, rightLeg) => {
-    const pantsGeometry = new THREE.CylinderGeometry(1.6, 1.2, 5, 32);
+    const pantsGeometry = new THREE.CylinderGeometry(1.2, 1.2, 5, 32);
     const pantsMaterial = new THREE.MeshBasicMaterial({color: '#fbbc03'});
     const pants = new THREE.Mesh( pantsGeometry, pantsMaterial );
     const leftLegPants = pants.clone();
