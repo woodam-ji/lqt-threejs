@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ThreeJS Practice 1</title>
-    <script src="http://threejs.org/build/three.min.js"></script>
-    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    
     <style>
         body { margin: 0; }
         canvas { width: 100%; height: 100% }
@@ -13,9 +12,14 @@
 <body>
 <div id="threejs_scene"></div>
 <!-- My threeJS Javascript codes here -->
+<script src="http://threejs.org/build/three.min.js"></script>
+<script src="../lib/cannon.min.js"></script>
+<script src="../lib/sketchbook.min.js"></script> <!-- Only use provided build, official package is extremely outdated! -->
+<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
 <script type="text/javascript" src="./createTable.js"></script>
 <script type="text/javascript" src="./createPillar.js"></script>
 <script type="text/javascript" src="./createPartition.js"></script>
+<script type="text/javascript" src="./createMonitor.js"></script>
 <script type="text/javascript" src="./script.js"></script>
 </body>
 </html>

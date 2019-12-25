@@ -30,6 +30,7 @@ function init() {
     createTables(scene);
     createPillars(scene);
     createPartitions(scene);
+    createMonitors(scene);
 
     new function renderScene() {
         requestAnimationFrame(renderScene);
