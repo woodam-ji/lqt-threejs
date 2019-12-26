@@ -30,6 +30,7 @@ function init() {
     createTables(scene);
     createPillars(scene);
     createPartitions(scene);
+    createMonitors(scene);
     createCeiling(scene);
 
     new function renderScene() {
