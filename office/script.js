@@ -7,9 +7,9 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
 
-    camera.position.x = 50;
-    camera.position.y = 50;
-    camera.position.z = 0;
+    camera.position.x = 70;
+    camera.position.y = 20;
+    camera.position.z = -40;
     camera.lookAt(scene.position);
 
     const ambiLight = new THREE.AmbientLight(0x464646);
@@ -30,6 +30,7 @@ function init() {
     createTables(scene);
     createPillars(scene);
     createPartitions(scene);
+    createCeiling(scene);
 
     new function renderScene() {
         requestAnimationFrame(renderScene);
