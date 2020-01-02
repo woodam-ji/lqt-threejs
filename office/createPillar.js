@@ -30,8 +30,8 @@ const createPillars = scene => {
     pillarTextList.forEach((pillarText, index) => {
         const pillar = createPillar(pillarText);
         pillar.position.x = -5;
-        pillar.position.y = 7;
-        pillar.position.z = 18 + (index*30);
+        pillar.position.y = 13;
+        pillar.position.z = 60 + (index * -30);
         scene.add(pillar);
     });
 };

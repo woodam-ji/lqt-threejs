@@ -12,8 +12,8 @@ function init() {
     camera.position.z = -40;
     camera.lookAt(scene.position);
 
-    const ambiLight = new THREE.AmbientLight(0x464646);
-    scene.add(ambiLight);
+    const ambientLight = new THREE.AmbientLight(0x464646);
+    scene.add(ambientLight);
 
     const spotLight = new THREE.SpotLight(0xFFFFFF, 1);
     spotLight.position.set(100,270,250);
@@ -27,11 +27,19 @@ function init() {
     const controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.update();
 
-    createTables(scene);
-    createPillars(scene);
-    createPartitions(scene);
-    createMonitors(scene);
+    const floor = createFloor();
+    scene.add(floor);
+    createTables(floor);
+    createPillars(floor);
+    createPartitions(floor);
+    createMonitors(floor);
     createCeiling(scene);
+    const boy = makeHuman('#FF00BF', false, renderer, floor, camera, true);
+    const girl = makeHuman('#BC5E00', true, renderer, floor, camera, false);
+    girl.position.x = 5;
+
+    scene.add(boy);
+    scene.add(girl);
 
     new function renderScene() {
         requestAnimationFrame(renderScene);

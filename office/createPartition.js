@@ -1,9 +1,9 @@
 function createPartitions(scene) {
     const partitionCountPerGroup = 3;
-    const partitonGroupCount = 6;
+    const partitionGroupCount = 6;
 
-    for (let i = 0; i < partitonGroupCount; i++) {
-        let initialZ = i * 30 + 3;
+    for (let i = 0; i < partitionGroupCount; i++) {
+        let initialZ = i * -30 + 75;
         for(let j=0; j < partitionCountPerGroup; j++) {
             let x = 0;
             let z = initialZ;
@@ -17,7 +17,7 @@ function createPartitions(scene) {
                 z += 6;
             }
 
-            const partition = createPartition(x, 0, z);
+            const partition = createPartition(x, 5, z);
             scene.add(partition);
         }
     }

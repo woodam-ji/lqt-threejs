@@ -77,7 +77,7 @@ const createMonitors = (scene) => {
     const monitorGroupCount = 6;
 
     for (let i = 0; i < monitorGroupCount; i++) {
-        let initialZ = i * 30;
+        let initialZ = i * -30 + 72;
         for(let j=0; j < monitorCountPerGroup; j++) {
             let x = 0;
             let z = initialZ;
@@ -91,7 +91,7 @@ const createMonitors = (scene) => {
                 z += 6;
             }
 
-            const monitor = createMonitor(x, .5, z, j);
+            const monitor = createMonitor(x, 5.5, z, j);
             scene.add(monitor);
         }
     }

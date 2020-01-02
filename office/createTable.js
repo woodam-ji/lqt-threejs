@@ -52,7 +52,7 @@ const createTables = scene => {
     const tableGroupCount = 6;
     const tableCountPerGroup = 6;
     for (let i = 0; i < tableGroupCount; i++) {
-        let initialZ = i * 30;
+        let initialZ = i * -30 + 72;
         for(let j=0; j < tableCountPerGroup; j++) {
             let x = 0;
             let z = initialZ;
@@ -68,7 +68,7 @@ const createTables = scene => {
             const table = createTable(
                 tableGeometry,
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
-                x, 0, z
+                x, 5, z
             );
 
             scene.add(table);
