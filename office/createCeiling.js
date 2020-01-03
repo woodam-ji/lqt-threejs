@@ -1,17 +1,16 @@
 const createFloor = () => {
     const floorGeometry = new THREE.BoxGeometry( 50, 2, 170 );
-    const floorMaterial = new THREE.MeshLambertMaterial( {color: 0xc5c5c5} );
+    const floorMaterial = new THREE.MeshStandardMaterial( {color: 0xc5c5c5} );
     const floor = new THREE.Mesh( floorGeometry, floorMaterial );
-    // floor.position.z = -45;
-    // floor.position.y = -5;
-    return floor;
+    floor.castShadow = true;
+
+    return floor
 };
 
 function createCeiling(scene) {
     const ceilingGeometry = new THREE.BoxGeometry( 50, 2, 170 );
     const ceilingMaterial = new THREE.MeshBasicMaterial( {color: 0xc5c5c5} );
     const ceiling = new THREE.Mesh( ceilingGeometry, ceilingMaterial );
-    // ceiling.position.z = 75;
     ceiling.position.y = 26;
     scene.add( ceiling );
     createCeilingLights(ceiling);
@@ -49,8 +48,11 @@ function createCeilingLight (x, y, z) {
     const ceilingLightMaterial = new THREE.MeshBasicMaterial( {color: 0xFFFFFF} );
     const ceilingLight = new THREE.Mesh( ceilingLightGeometry, ceilingLightMaterial );
     ceilingLight.position.set(x, y, z);
+
     const pointLight = new THREE.PointLight( 0xffffff, 1, 20 );
     pointLight.position.set( 5, -10, -3);
+    pointLight.castShadow = true;
     ceilingLight.add( pointLight );
+
     return ceilingLight;
 }

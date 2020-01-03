@@ -104,21 +104,21 @@ const makeHuman = (hairColor, isWoman, renderer, scene, camera, isChangeObjectDi
 
     // new function renderScene() {
     //     requestAnimationFrame(renderScene);
-    //     // if (leftArm.rotation.x > 0.3 || leftArm.rotation.x < -0.3) isChangeObjectDirection = !isChangeObjectDirection;
-    //     //
-    //     // if (isChangeObjectDirection) {
-    //     //     leftArm.rotation.x += 0.01;
-    //     //     rightArm.rotation.x -= 0.01;
-    //     //     leftLeg.rotation.x -= 0.01;
-    //     //     rightLeg.rotation.x -= -0.01;
-    //     // } else {
-    //     //     leftArm.rotation.x -= 0.01;
-    //     //     rightArm.rotation.x += 0.01;
-    //     //     leftLeg.rotation.x += 0.01;
-    //     //     rightLeg.rotation.x += -0.01;
-    //     // }
-    //     //
-    //     // head.position.z += 0.1;
+    //     if (leftArm.rotation.x > 0.3 || leftArm.rotation.x < -0.3) isChangeObjectDirection = !isChangeObjectDirection;
+    //
+    //     if (isChangeObjectDirection) {
+    //         leftArm.rotation.x += 0.01;
+    //         rightArm.rotation.x -= 0.01;
+    //         leftLeg.rotation.x -= 0.01;
+    //         rightLeg.rotation.x -= -0.01;
+    //     } else {
+    //         leftArm.rotation.x -= 0.01;
+    //         rightArm.rotation.x += 0.01;
+    //         leftLeg.rotation.x += 0.01;
+    //         rightLeg.rotation.x += -0.01;
+    //     }
+    //
+    //     head.position.z += 0.1;
     //
     //     renderer.render(scene,camera);
     // };

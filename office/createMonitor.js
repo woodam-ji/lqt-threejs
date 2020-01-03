@@ -92,6 +92,8 @@ const createMonitors = (scene) => {
             }
 
             const monitor = createMonitor(x, 5.5, z, j);
+            monitor.castShadow = true;
+            monitor.receiveShadow = false;
             scene.add(monitor);
         }
     }

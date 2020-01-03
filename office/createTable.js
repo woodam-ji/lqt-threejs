@@ -3,7 +3,7 @@ const createTextureMesh = (geometry, imageFile) => {
      * material에 이미지를 load해서 사용가능 (texture)
      */
     const loader = new THREE.TextureLoader();
-    const material = new THREE.MeshLambertMaterial({map: loader.load(imageFile)});
+    const material = new THREE.MeshStandardMaterial({map: loader.load(imageFile)});
 
     return new THREE.Mesh(geometry, material);
 };
@@ -32,7 +32,7 @@ const createTableLegMesh = (tableLegGeometry, tableLegMaterial, x, y, z) => {
 
 const addLegToTable = (tableMesh) => {
     const tableLegGeometry = createBoxGeometry( 0.5, 5, 0.5 );
-    const tableLegMaterial = new THREE.MeshPhysicalMaterial({color: '#444242'});
+    const tableLegMaterial = new THREE.MeshStandardMaterial({color: '#444242'});
 
     const tableLeg1 = createTableLegMesh(tableLegGeometry, tableLegMaterial, 4.5, -2.4, -2.2);
     const tableLeg2 = createTableLegMesh(tableLegGeometry, tableLegMaterial, -4.5, -2.4, -2.2);
@@ -71,6 +71,7 @@ const createTables = scene => {
                 x, 5, z
             );
 
+            table.receiveShadow = true;
             scene.add(table);
         }
     }

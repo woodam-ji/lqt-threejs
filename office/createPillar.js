@@ -35,3 +35,21 @@ const createPillars = scene => {
         scene.add(pillar);
     });
 };
+
+const createWall = scene => {
+    const wallGeometry = new THREE.BoxGeometry(2, 25, 25);
+    const wallMaterials = [
+        new THREE.MeshLambertMaterial({color:0xffffff, transparent:false, opacity:0.8, side: THREE.DoubleSide}),
+        new THREE.MeshLambertMaterial({color:0xffffff, transparent:false, opacity:0.8, side: THREE.DoubleSide}),
+        new THREE.MeshLambertMaterial({color:0xe55b81, transparent:false, opacity:0.8, side: THREE.DoubleSide}),
+        new THREE.MeshLambertMaterial({color:0xe55b81, transparent:false, opacity:0.8, side: THREE.DoubleSide}),
+        new THREE.MeshLambertMaterial({color:0xe55b81, transparent:false, opacity:0.8, side: THREE.DoubleSide}),
+        new THREE.MeshLambertMaterial({color:0xe55b81, transparent:false, opacity:0.8, side: THREE.DoubleSide}),
+    ];
+    // [front, back, top,  bottom, left, right]
+    const wall = new THREE.Mesh(wallGeometry, wallMaterials);
+    wall.position.x = 17;
+    wall.position.y = 13;
+    wall.position.z = -70;
+    scene.add(wall);
+};

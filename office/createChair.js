@@ -1,0 +1,3 @@
+const createChair = scene => {
+
+};
