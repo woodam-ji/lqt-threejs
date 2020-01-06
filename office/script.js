@@ -18,15 +18,8 @@ function init() {
     renderer.setSize(innerWidth, innerHeight);
     renderer.shadowMap.enabled = true;
 
-    const ambientLight = new THREE.AmbientLight(0xFFFFFF, .6);
+    const ambientLight = new THREE.AmbientLight(0xFFFFFF, .1);
     scene.add(ambientLight);
-
-    const spotLight = new THREE.SpotLight(0xFFFFFF, .5);
-    spotLight.position.set(100,270,250);
-    // spotLight.castShadow = true;
-    // spotLight.shadow.mapSize.width = 5120;
-    // spotLight.shadow.mapSize.height = 5120;
-    scene.add(spotLight);
 
     document.getElementById("threejs_scene").appendChild(renderer.domElement);
     const controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -41,10 +34,10 @@ function init() {
     createCeiling(scene);
     createChair(floor);
     createWall(floor);
-    // TODO. 의자
     // TODO. 이름표
-    // TODO. 나뭇잎 캐노피
-
+    // TODO. PC 화면
+    // TODO. 사람
+    // TODO. 타이머 (light)
     const boy = makeHuman('#FF00BF', false, renderer, floor, camera, true);
     const girl = makeHuman('#BC5E00', true, renderer, floor, camera, false);
     girl.position.x = 5;

@@ -33,8 +33,11 @@ function createCeilingLights(ceiling) {
             ceiling.add(ceilingLight);
         }
     }
+    const ceilingAmbientLight = new THREE.AmbientLight(0xFFFFFF, .5);
+    ceiling.add(ceilingAmbientLight);
     document.getElementById('toggleLight').addEventListener('click', () => {
         updateCeilingLight(ceilingLights);
+        updateAmbientLight(ceilingAmbientLight);
     });
 }
 function updateCeilingLight(ceilingLights) {
@@ -43,13 +46,17 @@ function updateCeilingLight(ceilingLights) {
         ceilingLight.visible = !isVisible;
     })
 }
+const updateAmbientLight = ambientLight => {
+    const isVisible = ambientLight.visible;
+    ambientLight.visible = !isVisible;
+};
 function createCeilingLight (x, y, z) {
     const ceilingLightGeometry = new THREE.BoxGeometry(6,1,3);
     const ceilingLightMaterial = new THREE.MeshBasicMaterial( {color: 0xFFFFFF} );
     const ceilingLight = new THREE.Mesh( ceilingLightGeometry, ceilingLightMaterial );
     ceilingLight.position.set(x, y, z);
 
-    const pointLight = new THREE.PointLight( 0xffffff, 1, 20 );
+    const pointLight = new THREE.PointLight( 0xffffff, 1, 30 );
     pointLight.position.set( 5, -10, -3);
     pointLight.castShadow = true;
     ceilingLight.add( pointLight );
