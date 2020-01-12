@@ -34,16 +34,17 @@ function init() {
     createCeiling(scene);
     createChair(floor);
     createWall(floor);
+    createHumans(renderer, floor, camera);
     // TODO. 이름표
     // TODO. PC 화면
     // TODO. 사람
     // TODO. 타이머 (light)
-    const boy = makeHuman('#FF00BF', false, renderer, floor, camera, true);
-    const girl = makeHuman('#BC5E00', true, renderer, floor, camera, false);
-    girl.position.x = 5;
+    // const boy = makeHuman('#FF00BF', false, renderer, floor, camera, true);
+    // const girl = makeHuman('#BC5E00', true, renderer, floor, camera, false);
+    // girl.position.x = 5;
 
-    scene.add(boy);
-    scene.add(girl);
+    // scene.add(boy);
+    // scene.add(girl);
 
     // const clock = new THREE.Clock;
 
