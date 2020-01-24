@@ -32,11 +32,10 @@ function init() {
     createPartitions(floor);
     createMonitors(floor);
     createCeiling(scene);
-    createChair(floor);
+    // createChair(floor);
     createWall(floor);
     createHumans(renderer, floor, camera);
     // TODO. 이름표
-    // TODO. PC 화면
     // TODO. 사람
     // TODO. 타이머 (light)
     // const boy = makeHuman('#FF00BF', false, renderer, floor, camera, true);

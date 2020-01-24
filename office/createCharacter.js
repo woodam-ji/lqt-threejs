@@ -193,7 +193,7 @@ const makeHuman = (hairColor, isWoman, shirtColor, pantsColor, renderer, scene, 
     //     renderer.render(scene,camera);
     // };
 
-    head.position.y = 9;
+    head.position.y = 8.8;
     head.scale.set(0.5, 0.5, 0.5);
     return head;
 };
