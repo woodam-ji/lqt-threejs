@@ -68,7 +68,7 @@ const createMonitor = (x, y, z, count) => {
     monitor.position.x = x;
     monitor.position.y = y;
     monitor.position.z = z;
-
+    createNameTag(monitor, count);
     return monitor;
 };
 
@@ -84,7 +84,7 @@ const createMonitors = (scene) => {
             if (j % 3 === 1) {
                 x = 10;
             } else if (j % 3 === 2) {
-                x = -10
+                x = -10;
             }
 
             if (Math.floor(j / 3) === 1) {
@@ -94,7 +94,44 @@ const createMonitors = (scene) => {
             const monitor = createMonitor(x, 5.5, z, j);
             monitor.castShadow = true;
             monitor.receiveShadow = false;
+
             scene.add(monitor);
         }
     }
+};
+
+const createNameTag = (scene, count) => {
+    const loader = new THREE.SVGLoader();
+
+    loader.load('./assets/nameTag.svg', (data) => {
+        const paths = data.paths;
+        const group = new THREE.Group();
+
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            const material = new THREE.MeshLambertMaterial({
+                color: '#ff3478',
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+
+            const shapes = path.toShapes(true);
+
+            for (let j = 0; j < shapes.length; j++) {
+                const shape = shapes[j];
+                // const geometry = new THREE.ShapeBufferGeometry( shape );
+                const geometry = new THREE.ExtrudeGeometry(shape, {
+                    depth: 4,
+                    bevelEnabled: false
+                });
+                const mesh = new THREE.Mesh(geometry, material);
+                group.add(mesh);
+            }
+        }
+        group.scale.set(0.02, 0.02, 0.02);
+        group.position.x = -9;
+        group.position.y = 1;
+        group.position.z = count > 3 ? 0.3 : -0.3;
+        scene.add(group);
+    });
 };
