@@ -112,9 +112,8 @@ const createNameTag = (scene, count) => {
             const material = new THREE.MeshLambertMaterial({
                 color: '#ff3478',
                 side: THREE.DoubleSide,
-                depthWrite: false
+                // depthWrite: false, // 투명하게 해주는 옵션
             });
-
             const shapes = path.toShapes(true);
 
             for (let j = 0; j < shapes.length; j++) {
@@ -128,10 +127,39 @@ const createNameTag = (scene, count) => {
                 group.add(mesh);
             }
         }
+
+        createName(group,'이인희');
         group.scale.set(0.02, 0.02, 0.02);
         group.position.x = -9;
         group.position.y = 1;
         group.position.z = count > 3 ? 0.3 : -0.3;
         scene.add(group);
     });
+};
+
+const createName = (scene, text) => {
+    const loader = new THREE.FontLoader();
+
+    loader.load( 'assets/font.typeface.json', function ( font ) {
+
+        const geometry = new THREE.TextGeometry( text, {
+            font: font,
+            size: 30,
+            height: 5,
+            // curveSegments: 12,
+            // bevelEnabled: true,
+            // bevelThickness: 10,
+            // bevelSize: 8,
+            // bevelOffset: 0,
+            // bevelSegments: 5
+        } );
+        const material = new THREE.MeshLambertMaterial({
+            color: '#000'
+        });
+        const name = new THREE.Mesh(geometry, material);
+        name.position.x = 267;
+        name.position.y = 280;
+        name.position.z = 0;
+        scene.add(name)
+    } );
 };
