@@ -1,5 +1,5 @@
-const createFloor = () => {
-    const floorGeometry = new THREE.BoxGeometry( 50, 2, 170 );
+const createFloor = (officeWidth, officeHeight) => {
+    const floorGeometry = new THREE.BoxGeometry( officeWidth, 2, officeHeight );
     const floorMaterial = new THREE.MeshStandardMaterial( {color: 0xc5c5c5} );
     const floor = new THREE.Mesh( floorGeometry, floorMaterial );
     floor.castShadow = true;
@@ -7,8 +7,8 @@ const createFloor = () => {
     return floor
 };
 
-function createCeiling(scene) {
-    const ceilingGeometry = new THREE.BoxGeometry( 50, 2, 170 );
+function createCeiling(scene, officeWidth, officeHeight) {
+    const ceilingGeometry = new THREE.BoxGeometry( officeWidth, 2, officeHeight );
     const ceilingMaterial = new THREE.MeshBasicMaterial( {color: 0xc5c5c5} );
     const ceiling = new THREE.Mesh( ceilingGeometry, ceilingMaterial );
     ceiling.position.y = 26;

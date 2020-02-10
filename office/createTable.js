@@ -47,22 +47,17 @@ const addLegToTable = (tableMesh) => {
     return tableMesh;
 };
 
-const createTables = scene => {
+const createTables = (scene, groupCount, userCountPerGroup) => {
     const tableGeometry = createBoxGeometry( 10, 0.5, 5 );
-    const tableGroupCount = 6;
-    const tableCountPerGroup = 6;
-    for (let i = 0; i < tableGroupCount; i++) {
-        let initialZ = i * -30 + 72;
-        for(let j=0; j < tableCountPerGroup; j++) {
-            let x = 0;
+    const oneSideMaxCount = userCountPerGroup / 2;
+    const tableGroup = new THREE.Group();
+    for (let i = 0; i < groupCount; i++) {
+        const initialZ = i * -30 + 72;
+        for(let j=0; j < userCountPerGroup; j++) {
+            const x = 10 * (j % oneSideMaxCount);
             let z = initialZ;
-            if (j % 3 === 1) {
-                x = 10;
-            } else if (j % 3 === 2) {
-                x = -10
-            }
 
-            if (Math.floor(j / 3) === 1) {
+            if (Math.floor(j / oneSideMaxCount) === 1) {
                 z += 6;
             }
             const table = createTable(
@@ -71,8 +66,9 @@ const createTables = scene => {
                 x, 5, z
             );
 
-            table.receiveShadow = true;
-            scene.add(table);
+            tableGroup.add(table);
         }
     }
+    tableGroup.receiveShadow = true;
+    scene.add(tableGroup);
 };

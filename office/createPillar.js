@@ -26,7 +26,7 @@ const createPillar = pillarText => {
 };
 
 const createPillars = scene => {
-    const pillarTextList = ['R10', 'R09', 'R08', 'R07', 'R06'];
+    const pillarTextList = ['R04', 'R03', 'R02', 'R01'];
     pillarTextList.forEach((pillarText, index) => {
         const pillar = createPillar(pillarText);
         pillar.position.x = -5;
@@ -48,7 +48,7 @@ const createWall = scene => {
     ];
     // [front, back, top,  bottom, left, right]
     const wall = new THREE.Mesh(wallGeometry, wallMaterials);
-    wall.position.x = 17;
+    wall.position.x = 3;
     wall.position.y = 13;
     wall.position.z = -70;
     scene.add(wall);

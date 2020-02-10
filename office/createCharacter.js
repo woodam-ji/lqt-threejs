@@ -1,8 +1,6 @@
 const shirtColors = ['#9FF781', '#5882FA', '#8258FA', '#FAAC58', '#FA5858', '#81DAF5', '#F5A9F2', '#B45F04', '#F781F3', '#5882FA'];
 const pantsColors = ['#2E2E2E', '#FBBC03', '#3B0B2E', '#0101DF', '#04B4AE', '#AEB404', '#088A29', '#8A084B', '#3B170B', '#0B243B'];
-const createHumans = (renderer, scene, camera) => {
-    const countPerGroup = 6;
-    const groupCount = 6;
+const createHumans = (renderer, scene, camera, groupCount, userCountPerGroup) => {
     const humanType = [
         {
             isWoman: true,
@@ -40,32 +38,42 @@ const createHumans = (renderer, scene, camera) => {
             shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
             pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
         },
+        {
+            isWoman: true,
+            hairColor: '#290607',
+            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
+            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
+        },
+        {
+            isWoman: true,
+            hairColor: '#290607',
+            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
+            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
+        }
     ];
+    const oneSideMaxCount = userCountPerGroup / 2;
+    const humanGroup = new THREE.Group();
     for (let i = 0; i < groupCount; i++) {
         let initialZ = i * -30 + 67;
-        for(let j=0; j < countPerGroup; j++) {
-            let x = 0;
+        for(let j=0; j < userCountPerGroup; j++) {
+            const x = 10 * (j % oneSideMaxCount);
             let z = initialZ;
             let rotateY = 0;
-            if (j % 3 === 1) {
-                x = 10;
-            } else if (j % 3 === 2) {
-                x = -10;
-            }
 
-            if (Math.floor(j / 3) === 1) {
+            if (Math.floor(j / oneSideMaxCount) === 1) {
                 z += 16;
             }
-            if (j >= 3){
+            if (j >= oneSideMaxCount){
                 rotateY = Math.PI;
             }
             const human = makeHuman(humanType[j].hairColor, humanType[j].isWoman, humanType[j].shirtColor, humanType[j].pantsColor, renderer, scene, camera, true);
             human.position.x = x;
             human.position.z = z;
             human.rotation.y = rotateY;
-            scene.add(human);
+            humanGroup.add(human);
         }
     }
+    scene.add(humanGroup);
 };
 
 const makeHuman = (hairColor, isWoman, shirtColor, pantsColor, renderer, scene, camera, isChangeObjectDirection) => {

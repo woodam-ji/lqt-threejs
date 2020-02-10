@@ -1,27 +1,21 @@
-function createPartitions(scene) {
-    const partitionCountPerGroup = 3;
-    const partitionGroupCount = 6;
-
-    for (let i = 0; i < partitionGroupCount; i++) {
+const createPartitions = (scene, groupCount, partitionCountPerGroup) => {
+    const partitionGroup = new THREE.Group();
+    for (let i = 0; i < groupCount; i++) {
         let initialZ = i * -30 + 75;
         for (let j = 0; j < partitionCountPerGroup; j++) {
-            let x = 0;
+            const x = 10 * (j % groupCount);
             let z = initialZ;
-            if (j % 3 === 1) {
-                x = 10;
-            } else if (j % 3 === 2) {
-                x = -10
-            }
 
-            if (Math.floor(j / 3) === 1) {
+            if (Math.floor(j / partitionCountPerGroup) === 1) {
                 z += 6;
             }
 
             const partition = createPartition(x, 5, z);
-            scene.add(partition);
+            partitionGroup.add(partition);
         }
     }
-}
+    scene.add(partitionGroup);
+};
 
 function createPartition(x, y, z) {
     let partition = addPartitionBottom();

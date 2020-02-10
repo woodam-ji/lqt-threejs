@@ -7,7 +7,7 @@ const addMonitorBottom = () => {
     return monitorBottom;
 };
 
-const addMonitorMiddleToBottom = (monitorBottom, count) => {
+const addMonitorMiddleToBottom = (monitorBottom) => {
     const monitorMiddleGeometry = createBoxGeometry(.7, 3, .7);
     const monitorMaterial = new THREE.MeshLambertMaterial( { color: 0x333333 } );
     const monitorMiddle = new THREE.Mesh(monitorMiddleGeometry, monitorMaterial);
@@ -15,16 +15,12 @@ const addMonitorMiddleToBottom = (monitorBottom, count) => {
     monitorBottom.add(monitorMiddle);
     monitorMiddle.position.x = 0;
     monitorMiddle.position.y = 1;
-    if(count < 3) {
-        monitorMiddle.position.z = .5;
-    } else if(count >= 3) {
-        monitorMiddle.position.z = -.5;
-    }
+    monitorMiddle.position.z = .5;
 
     return {monitorBottom, monitorMiddle};
-}
+};
 
-const addTopToMiddle = ({monitorBottom, monitorMiddle}, count) => {
+const addTopToMiddle = ({monitorBottom, monitorMiddle}) => {
     const monitorTopGeometry = createBoxGeometry(6, 4, .5);
     const monitorMaterial = new THREE.MeshLambertMaterial( { color: 0x333333 } );
     const monitorTop = new THREE.Mesh(monitorTopGeometry, monitorMaterial);
@@ -33,74 +29,61 @@ const addTopToMiddle = ({monitorBottom, monitorMiddle}, count) => {
     monitorMiddle.add(monitorTop);
     monitorTop.position.x = 0;
     monitorTop.position.y = 3;
-    if(count < 3) {
-        monitorTop.position.z = -.5;
-    } else if(count >= 3) {
-        monitorTop.position.z = .5;
-    }
+    monitorMiddle.position.z = -.5;
 
     return {monitorBottom, monitorTop};
-}
+};
 
-const addDisplayToTop = ({monitorBottom, monitorTop}, count) => {
+const addDisplayToTop = ({monitorBottom, monitorTop}) => {
     const monitorDisplayGeometry = createBoxGeometry(5, 3.5, .3);
     const loader = new THREE.TextureLoader();
     const displayMaterial = new THREE.MeshLambertMaterial( {map: loader.load('https://t1.daumcdn.net/cfile/tistory/24E61F335966F29A15')} );
     const monitorDisplay = new THREE.Mesh(monitorDisplayGeometry, displayMaterial);
 
     monitorTop.add(monitorDisplay);
-    if(count < 3) {
-        monitorDisplay.position.z = -.13;
-    } else if(count >= 3) {
-        monitorDisplay.position.z = .13;
-    }
-    
+    monitorDisplay.position.z = .13;
     monitorDisplay.position.y = 0;
 
     return monitorBottom;
-}
+};
 
-const createMonitor = (x, y, z, count) => {
+const createMonitor = (x, y, z) => {
     let monitor = addMonitorBottom();
-    monitor = addMonitorMiddleToBottom(monitor, count);
-    monitor = addTopToMiddle(monitor, count);
-    monitor = addDisplayToTop(monitor, count);
+    monitor = addMonitorMiddleToBottom(monitor);
+    monitor = addTopToMiddle(monitor);
+    monitor = addDisplayToTop(monitor);
     monitor.position.x = x;
     monitor.position.y = y;
     monitor.position.z = z;
-    createNameTag(monitor, count);
+    createNameTag(monitor);
+
     return monitor;
 };
 
-const createMonitors = (scene) => {
-    const monitorCountPerGroup = 6;
-    const monitorGroupCount = 6;
-
-    for (let i = 0; i < monitorGroupCount; i++) {
+const createMonitors = (scene, groupCount, userCountPerGroup) => {
+    const oneSideMaxCount = userCountPerGroup / 2;
+    const monitorGroup = new THREE.Group();
+    for (let i = 0; i < groupCount; i++) {
         let initialZ = i * -30 + 72;
-        for(let j=0; j < monitorCountPerGroup; j++) {
-            let x = 0;
+        for(let j=0; j < userCountPerGroup; j++) {
+            const x = 10 * (j % oneSideMaxCount);
             let z = initialZ;
-            if (j % 3 === 1) {
-                x = 10;
-            } else if (j % 3 === 2) {
-                x = -10;
-            }
 
-            if (Math.floor(j / 3) === 1) {
+            if (Math.floor(j / oneSideMaxCount) === 1) {
                 z += 6;
             }
 
             const monitor = createMonitor(x, 5.5, z, j);
-            monitor.castShadow = true;
-            monitor.receiveShadow = false;
-
-            scene.add(monitor);
+            if (j < oneSideMaxCount) monitor.rotation.y = Math.PI;
+            monitorGroup.add(monitor);
         }
     }
+    // monitorGroup.castShadow = true;
+    // monitorGroup.receiveShadow = true;
+    scene.add(monitorGroup);
 };
 
-const createNameTag = (scene, count) => {
+const createNameTag = (scene) => {
     const loader = new THREE.SVGLoader();
 
     loader.load('./assets/nameTag.svg', (data) => {
@@ -132,7 +115,7 @@ const createNameTag = (scene, count) => {
         group.scale.set(0.02, 0.02, 0.02);
         group.position.x = -9;
         group.position.y = 1;
-        group.position.z = count > 3 ? 0.3 : -0.3;
+        group.position.z = -.3;
         scene.add(group);
     });
 };
@@ -141,11 +124,10 @@ const createName = (scene, text) => {
     const loader = new THREE.FontLoader();
 
     loader.load( 'assets/font.typeface.json', function ( font ) {
-
         const geometry = new THREE.TextGeometry( text, {
             font: font,
-            size: 30,
-            height: 5,
+            size: 26,
+            height: 1,
             // curveSegments: 12,
             // bevelEnabled: true,
             // bevelThickness: 10,
@@ -154,12 +136,12 @@ const createName = (scene, text) => {
             // bevelSegments: 5
         } );
         const material = new THREE.MeshLambertMaterial({
-            color: '#000'
+            color: '#fff'
         });
         const name = new THREE.Mesh(geometry, material);
-        name.position.x = 267;
-        name.position.y = 280;
-        name.position.z = 0;
+        name.position.x = 273;
+        name.position.y = 282;
+        name.position.z = 4;
         scene.add(name)
     } );
 };

@@ -25,27 +25,24 @@ function init() {
     const controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.update();
 
-    const floor = createFloor();
-    scene.add(floor);
-    createTables(floor);
+    const groupCount = 17;
+    const userCountPerGroup = 8;
+    const partitionCountPerGroup = userCountPerGroup / 2;
+
+    const officeWidth = partitionCountPerGroup * 11;
+    const officeHeight = groupCount * 11;
+
+    const floor = createFloor(officeWidth, officeHeight);
+    createTables(floor, groupCount, userCountPerGroup);
     createPillars(floor);
-    createPartitions(floor);
-    createMonitors(floor);
-    createCeiling(scene);
-    // createChair(floor);
+    createPartitions(floor, groupCount, partitionCountPerGroup);
+    createMonitors(floor, groupCount, userCountPerGroup);
+    createCeiling(scene, officeWidth, officeHeight);
     createWall(floor);
-    createHumans(renderer, floor, camera);
-    // TODO. 이름표
-    // TODO. 사람
+    createHumans(renderer, floor, camera, groupCount, userCountPerGroup);
+    scene.add(floor);
+
     // TODO. 타이머 (light)
-    // const boy = makeHuman('#FF00BF', false, renderer, floor, camera, true);
-    // const girl = makeHuman('#BC5E00', true, renderer, floor, camera, false);
-    // girl.position.x = 5;
-
-    // scene.add(boy);
-    // scene.add(girl);
-
-    // const clock = new THREE.Clock;
 
     new function renderScene() {
         renderer.render(scene,camera);
