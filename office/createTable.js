@@ -9,7 +9,7 @@ const createTextureMesh = (geometry, imageFile) => {
 };
 
 const createBoxGeometry = (width, height, depth, ...args) => {
-    return new THREE.BoxGeometry(width, height, depth, ...args );
+    return new THREE.BoxGeometry(width, height, depth, ...args);
 };
 
 const createTable = (tableGeometry, image, x, y, z) => {
@@ -17,7 +17,6 @@ const createTable = (tableGeometry, image, x, y, z) => {
     table.position.x = x;
     table.position.y = y;
     table.position.z = z;
-    table.castShadow = true;
 
     return addLegToTable(table);
 };
@@ -31,7 +30,7 @@ const createTableLegMesh = (tableLegGeometry, tableLegMaterial, x, y, z) => {
 };
 
 const addLegToTable = (tableMesh) => {
-    const tableLegGeometry = createBoxGeometry( 0.5, 5, 0.5 );
+    const tableLegGeometry = createBoxGeometry(0.5, 5, 0.5);
     const tableLegMaterial = new THREE.MeshStandardMaterial({color: '#444242'});
 
     const tableLeg1 = createTableLegMesh(tableLegGeometry, tableLegMaterial, 4.5, -2.4, -2.2);
@@ -47,19 +46,17 @@ const addLegToTable = (tableMesh) => {
     return tableMesh;
 };
 
-const createTables = (scene, groupCount, userCountPerGroup) => {
-    const tableGeometry = createBoxGeometry( 10, 0.5, 5 );
+const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initialZ = 0) => {
+    const tableGeometry = createBoxGeometry(10, 0.5, 5);
     const oneSideMaxCount = userCountPerGroup / 2;
     const tableGroup = new THREE.Group();
     for (let i = 0; i < groupCount; i++) {
-        const initialZ = i * -30 + 72;
-        for(let j=0; j < userCountPerGroup; j++) {
-            const x = 10 * (j % oneSideMaxCount);
-            let z = initialZ;
-
-            if (Math.floor(j / oneSideMaxCount) === 1) {
-                z += 6;
-            }
+        const groupZ = i * 30 + initialZ;
+        for (let j = 0; j < userCountPerGroup; j++) {
+            const x = 10 * (j % oneSideMaxCount) + initialX;
+            const isLastItem = Math.floor(j / oneSideMaxCount) === 1;
+            let z = groupZ;
+            if (isLastItem) z += 6;
             const table = createTable(
                 tableGeometry,
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
@@ -70,5 +67,6 @@ const createTables = (scene, groupCount, userCountPerGroup) => {
         }
     }
     tableGroup.receiveShadow = true;
+    // table.castShadow = true;
     scene.add(tableGroup);
 };

@@ -1,10 +1,10 @@
-const createPartitions = (scene, groupCount, partitionCountPerGroup) => {
+const createPartitions = (scene, groupCount, partitionCountPerGroup, initialX, initialZ) => {
     const partitionGroup = new THREE.Group();
     for (let i = 0; i < groupCount; i++) {
-        let initialZ = i * -30 + 75;
+        let groupZ = i * 30 + initialZ;
         for (let j = 0; j < partitionCountPerGroup; j++) {
-            const x = 10 * (j % groupCount);
-            let z = initialZ;
+            const x = 10 * (j % groupCount) + initialX;
+            let z = groupZ;
 
             if (Math.floor(j / partitionCountPerGroup) === 1) {
                 z += 6;

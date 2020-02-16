@@ -1,3 +1,0 @@
-const createChair = scene => {
-
-};
