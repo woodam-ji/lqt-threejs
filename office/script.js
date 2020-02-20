@@ -46,7 +46,7 @@ function init() {
 const makeOffice = (scene, renderer, camera) => {
     // 5F
 
-    const groupCount = 10;
+    const groupCount = 17;
     const userCountPerGroup = 8;
     const partitionCountPerGroup = userCountPerGroup / 2;
 
@@ -67,18 +67,18 @@ const makeOffice = (scene, renderer, camera) => {
 
     const fifthFloorHumanInfo = makeFifthFloorData();
 
-    const pillarList = ['R04', 'R03', 'R02', 'R01'];
+    const pillarList = ['', '', '', '', '', '', '', '', ''];
     createPillars(floor, pillarList, initialX + 5, initialZ + 12.5);
     createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 15, initialZ + 12.5);
     createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
     createCeiling(scene, officeWidth, officeHeight, groupCount,initialX + 16, initialZ + 12.5);
-    createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 40);
+    createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 45);
     createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+15, initialZ+5);
 
 
     // 두번째 열
 
-    const pillarSecondRowList = ['', '', '', ''];
+    const pillarSecondRowList = ['R05', 'R04', 'R03', 'R02', 'R01', 'L01', 'L02', 'L03', 'L04'];
     createPillars(floor, pillarSecondRowList, initialX + 55, initialZ + 12.5);
     createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ + 10);
     createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 65, initialZ + 12.5);
