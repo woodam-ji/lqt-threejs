@@ -30,6 +30,10 @@ function init() {
     scene.add(office);
 
     // TODO. 타이머 (light)
+    // 직군별 혹은 팀별 옷 색깔 다르게
+    // 불 끄러 가도록
+    // 모니터 워크로그 연동
+
 
     new function renderScene() {
         renderer.render(scene, camera);
@@ -61,105 +65,15 @@ const makeOffice = (scene, renderer, camera) => {
     const floor = createFloor(officeWidth, officeHeight);
     createTables(floor, groupCount, userCountPerGroup, initialX + 15, initialZ + 10);
 
-    const fifthFloorHumanInfo = [
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: '백경훈', isWoman: false},
-        {name: '박한천', isWoman: false},
-        {name: '황찬희', isWoman: false},
-        {name: '이지은', isWoman: true},
-
-        {name: '이완기', isWoman: false},
-        {name: '이지훈', isWoman: false},
-        {name: '정석', isWoman: false},
-        {name: undefined, isWoman: false},
-        {name: '지우담', isWoman: false},
-        {name: '이인희', isWoman: true},
-        {name: '김강일', isWoman: false},
-        {name: undefined},
-
-        {name: undefined, isWoman: false},
-        {name: '신창선', isWoman: false},
-        {name: '손미리', isWoman: true},
-        {name: '함문주', isWoman: true},
-        {name: undefined, isWoman: false},
-        {name: undefined, isWoman: false},
-        {name: '진명성', isWoman: false},
-        {name: '이민재', isWoman: false},
-
-        {name: '장현길', isWoman: false},
-        {name: '조기운', isWoman: false},
-        {name: '이경연', isWoman: false},
-        {name: '이희선', isWoman: false},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-    ];
+    const fifthFloorHumanInfo = makeFifthFloorData();
 
     const pillarList = ['R04', 'R03', 'R02', 'R01'];
     createPillars(floor, pillarList, initialX + 5, initialZ + 12.5);
     createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 15, initialZ + 12.5);
-    createMonitors(floor, fifthFloorHumanInfo, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
+    createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
     createCeiling(scene, officeWidth, officeHeight, groupCount,initialX + 16, initialZ + 12.5);
     createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 40);
-    createHumans(renderer, floor, camera, fifthFloorHumanInfo, groupCount, userCountPerGroup, initialX+15, initialZ+5);
+    createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+15, initialZ+5);
 
 
     // 두번째 열
@@ -169,79 +83,8 @@ const makeOffice = (scene, renderer, camera) => {
     createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ + 10);
     createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 65, initialZ + 12.5);
 
-    const fifthFloorSecondRowHumanInfo = [
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined, isWoman: false},
-        {name: undefined, isWoman: false},
-        {name: undefined, isWoman: false},
-
-        {name: '정석교', isWoman: false},
-        {name: '이주형', isWoman: false},
-        {name: undefined, isWoman: false},
-        {name: '조이현', isWoman: false},
-        {name: '지중엽', isWoman: false},
-        {name: '안창영', isWoman: false},
-
-        {name: '서광석', isWoman: false},
-        {name: '전용성', isWoman: false},
-        {name: undefined, isWoman: false},
-        {name: undefined, isWoman: false},
-        {name: undefined, isWoman: false},
-        {name: undefined, isWoman: false},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined},
-        {name: undefined}
-    ];
-    createMonitors(floor, fifthFloorSecondRowHumanInfo, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ+ 10);
-    createHumans(renderer, floor, camera, fifthFloorSecondRowHumanInfo, groupCount, secondRowUserCountPerGroup, initialX+65, initialZ+5);
+    createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ+ 10);
+    createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX+65, initialZ+5);
     return floor;
 };
 window.onload = init();
