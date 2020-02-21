@@ -30,7 +30,6 @@ function init() {
     scene.add(office);
 
     // TODO. 타이머 (light)
-    // 직군별 혹은 팀별 옷 색깔 다르게
     // 불 끄러 가도록
     // 모니터 워크로그 연동
 
@@ -45,7 +44,6 @@ function init() {
 
 const makeOffice = (scene, renderer, camera) => {
     // 5F
-
     const groupCount = 17;
     const userCountPerGroup = 8;
     const partitionCountPerGroup = userCountPerGroup / 2;
@@ -53,7 +51,10 @@ const makeOffice = (scene, renderer, camera) => {
     const secondRowUserCountPerGroup = 6;
     const secondRowPartitionCountPerGroup = secondRowUserCountPerGroup / 2;
 
-    const officeWidth = (partitionCountPerGroup + secondRowPartitionCountPerGroup) * 10 + 20 + 10;
+    const thirdColumnUserCountPerGroup = 6;
+    const thirdColumnPartitionCountPerGroup = thirdColumnUserCountPerGroup / 2;
+
+    const officeWidth = (partitionCountPerGroup + secondRowPartitionCountPerGroup + thirdColumnPartitionCountPerGroup) * 10 + 30 + 50;
     const officeHeight = groupCount * 30;
 
     // side 10
@@ -67,24 +68,23 @@ const makeOffice = (scene, renderer, camera) => {
 
     const fifthFloorHumanInfo = makeFifthFloorData();
 
-    const pillarList = ['', '', '', '', '', '', '', '', ''];
-    createPillars(floor, pillarList, initialX + 5, initialZ + 12.5);
+    createPillars(floor, fifthFloorHumanInfo.firstColumnPillarList, initialX + 5, initialZ + 12.5);
     createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 15, initialZ + 12.5);
     createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
     createCeiling(scene, officeWidth, officeHeight, groupCount,initialX + 16, initialZ + 12.5);
     createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 45);
     createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+15, initialZ+5);
 
-
     // 두번째 열
-
-    const pillarSecondRowList = ['R05', 'R04', 'R03', 'R02', 'R01', 'L01', 'L02', 'L03', 'L04'];
-    createPillars(floor, pillarSecondRowList, initialX + 55, initialZ + 12.5);
+    createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 55, initialZ + 12.5);
     createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ + 10);
     createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 65, initialZ + 12.5);
-
     createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ+ 10);
     createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX+65, initialZ+5);
+
+    // 세번째 열
+    createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 105, initialZ + 12.5);
+
     return floor;
 };
 window.onload = init();

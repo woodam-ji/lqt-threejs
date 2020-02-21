@@ -1,56 +1,6 @@
-const shirtColors = ['#9FF781', '#5882FA', '#8258FA', '#FAAC58', '#FA5858', '#81DAF5', '#F5A9F2', '#B45F04', '#F781F3', '#5882FA'];
+const hairColors = ['#495942', '#71917b','#3e1111', '#773e29', '#354693', '#000000', '#b69043', '#81DAF5', '#F5A9F2', '#B45F04'];
 const pantsColors = ['#2E2E2E', '#FBBC03', '#3B0B2E', '#0101DF', '#04B4AE', '#AEB404', '#088A29', '#8A084B', '#3B170B', '#0B243B'];
 const createHumans = (renderer, scene, camera, humanInfos, groupCount, userCountPerGroup, initialX, initialZ) => {
-    const humanType = [
-        {
-            isWoman: true,
-            hairColor: '#FF00BF',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        },
-        {
-            isWoman: false,
-            hairColor: '#000000',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        },
-        {
-            isWoman: true,
-            hairColor: '#ffc771',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        },
-        {
-            isWoman: true,
-            hairColor: '#290607',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        },
-        {
-            isWoman: false,
-            hairColor: '#49330d',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        },
-        {
-            isWoman: false,
-            hairColor: '#504e0f',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        },
-        {
-            isWoman: true,
-            hairColor: '#290607',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        },
-        {
-            isWoman: true,
-            hairColor: '#290607',
-            shirtColor: shirtColors[parseInt(Math.random() * shirtColors.length)],
-            pantsColor: pantsColors[parseInt(Math.random() * pantsColors.length)],
-        }
-    ];
     const oneSideMaxCount = userCountPerGroup / 2;
     const humanGroup = new THREE.Group();
     let humanCount = 0;
@@ -71,7 +21,7 @@ const createHumans = (renderer, scene, camera, humanInfos, groupCount, userCount
             }
 
             if (!!humanInfo.name) {
-                const human = makeHuman(humanType[j].hairColor, humanInfo.isWoman, humanType[j].shirtColor, humanType[j].pantsColor, renderer, scene, camera, true);
+                const human = makeHuman(hairColors[parseInt(Math.random() * pantsColors.length)], humanInfo.isWoman, departmentColor[humanInfo.department], pantsColors[parseInt(Math.random() * pantsColors.length)], renderer, scene, camera, true);
                 human.position.x = x;
                 human.position.z = z;
                 human.rotation.y = rotateY;
