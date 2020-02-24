@@ -92,7 +92,7 @@ const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initia
 const createNameTag = (scene, name = '') => {
     const loader = new THREE.SVGLoader();
 
-    loader.load('./assets/nameTag.svg', (data) => {
+    loader.load('/public/assets/nameTag.svg', (data) => {
         const paths = data.paths;
         const group = new THREE.Group();
 
@@ -129,7 +129,7 @@ const createNameTag = (scene, name = '') => {
 const createName = (scene, text) => {
     const loader = new THREE.FontLoader();
 
-    loader.load('assets/font.typeface.json', function (font) {
+    loader.load('/public/assets/font.typeface.json', function (font) {
         const geometry = new THREE.TextGeometry(text, {
             font: font,
             size: 26,

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ThreeJS Practice 1</title>
+
+        <style>
+            body { margin: 0; }
+            canvas { width: 100%; height: 100% }
+            button {
+                width: 100px;
+                height: 30px;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="threejs_scene"></div>
+        <button id="toggleLight">{{title}}</button>
+        <!-- My threeJS Javascript codes here -->
+        <script>
+            var a = `{{{title}}}`;
+            const masterArr = {{{json infos}}};
+            console.log(masterArr);
+            console.log("BB", a);
+        </script>
+        <script src="public/script/three.js"></script>
+        <!--<script src="../lib/cannon.min.js"></script>-->
+        <!--<script src="../lib/sketchbook.min.js"></script> &lt;!&ndash; Only use provided build, official package is extremely outdated! &ndash;&gt;-->
+        <script src="public/script/OrbitControls.js"></script>
+        <script src="public/script/SVGLoader.js"></script>
+        <script type="text/javascript" src="public/script/createTable.js"></script>
+        <script type="text/javascript" src="public/script/createPillar.js"></script>
+        <script type="text/javascript" src="public/script/createPartition.js"></script>
+        <script type="text/javascript" src="public/script/createMonitor.js"></script>
+        <script type="text/javascript" src="public/script/createCeiling.js"></script>
+        <script type="text/javascript" src="public/script/createCharacter.js"></script>
+        <script src="public/script/data/fifthFloor.js"></script>
+        <script src="public/script/script.js"></script>
+    </body>
+</html>
