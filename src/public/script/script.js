@@ -83,8 +83,13 @@ const makeOffice = (scene, renderer, camera) => {
     createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX+65, initialZ+5);
 
     // 세번째 열
-    createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 105, initialZ + 12.5);
+    const thirdColumnGroupCount = 10;
 
+    createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 105, initialZ + 12.5);
+    createTables(floor, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ + 25);
+    createPartitions(floor, thirdColumnGroupCount, secondRowPartitionCountPerGroup, initialX + 145, initialZ + 28);
+    createMonitors(floor, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ+ 25);
+    createHumans(renderer, floor, camera, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX+145, initialZ+20);
     return floor;
 };
 window.onload = init();
