@@ -14,11 +14,21 @@
                 top: 10px;
                 right: 10px;
             }
+            select {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+            }
         </style>
     </head>
     <body>
         <div id="threejs_scene"></div>
         <button id="toggleLight">{{title}}</button>
+        <select id="selectDepartment">
+            <option disabled="disabled">이동할 부서를 선택해주세요.</option>
+            <option value="LQT">LQT</option>
+            <option value="CXT">CXT</option>
+        </select>
         <!-- My threeJS Javascript codes here -->
         <script>
             var a = `{{{title}}}`;
@@ -27,8 +37,6 @@
             console.log("BB", a);
         </script>
         <script src="public/script/three.js"></script>
-        <!--<script src="../lib/cannon.min.js"></script>-->
-        <!--<script src="../lib/sketchbook.min.js"></script> &lt;!&ndash; Only use provided build, official package is extremely outdated! &ndash;&gt;-->
         <script src="public/script/OrbitControls.js"></script>
         <script src="public/script/SVGLoader.js"></script>
         <script type="text/javascript" src="public/script/createTable.js"></script>
@@ -37,7 +45,7 @@
         <script type="text/javascript" src="public/script/createMonitor.js"></script>
         <script type="text/javascript" src="public/script/createCeiling.js"></script>
         <script type="text/javascript" src="public/script/createCharacter.js"></script>
-        <script src="public/script/data/fifthFloor.js"></script>
-        <script src="public/script/script.js"></script>
+        <script type="text/javascript" src="public/script/data/fifthFloor.js"></script>
+        <script type="text/javascript" src="public/script/script.js"></script>
     </body>
 </html>

@@ -33,6 +33,16 @@ function init() {
     // 불 끄러 가도록
     // 모니터 워크로그 연동
 
+    document.getElementById('selectDepartment').addEventListener('change', (e)=>{
+        const department = e.currentTarget.value;
+        const updateCameraPosition = departmentPosition[department];
+        if (updateCameraPosition){
+            // new TWEEN.Tween( camera.position ).to( updateCameraPosition, 600 )
+            //     .easing( TWEEN.Easing.Sinusoidal.EaseInOut).start();
+            camera.position.set(updateCameraPosition.x, updateCameraPosition.y, updateCameraPosition.z);
+            controls.update();
+        }
+    });
 
     new function renderScene() {
         renderer.render(scene, camera);
@@ -57,21 +67,17 @@ const makeOffice = (scene, renderer, camera) => {
     const officeWidth = (partitionCountPerGroup + secondRowPartitionCountPerGroup + thirdColumnPartitionCountPerGroup) * 10 + 30 + 50;
     const officeHeight = groupCount * 30;
 
-    // side 10
-    // table 10 X 5
-
     const initialX = officeWidth / 2 * -1;
     const initialZ = officeHeight / 2 * -1;
 
     const floor = createFloor(officeWidth, officeHeight);
-    createTables(floor, groupCount, userCountPerGroup, initialX + 15, initialZ + 10);
-
     const fifthFloorHumanInfo = makeFifthFloorData();
+    createCeiling(scene, officeWidth, officeHeight, groupCount,initialX + 30, initialZ + 12.5);
 
     createPillars(floor, fifthFloorHumanInfo.firstColumnPillarList, initialX + 5, initialZ + 12.5);
+    createTables(floor, groupCount, userCountPerGroup, initialX + 15, initialZ + 10);
     createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 15, initialZ + 12.5);
     createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
-    createCeiling(scene, officeWidth, officeHeight, groupCount,initialX + 16, initialZ + 12.5);
     createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 45);
     createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+15, initialZ+5);
 
@@ -84,7 +90,6 @@ const makeOffice = (scene, renderer, camera) => {
 
     // 세번째 열
     const thirdColumnGroupCount = 10;
-
     createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 105, initialZ + 12.5);
     createTables(floor, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ + 25);
     createPartitions(floor, thirdColumnGroupCount, secondRowPartitionCountPerGroup, initialX + 145, initialZ + 28);

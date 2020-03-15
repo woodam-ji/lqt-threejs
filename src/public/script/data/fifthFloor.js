@@ -26,6 +26,10 @@ const departmentColor = {
     MGMT: '#666666',
     TC: '#e06666',
 };
+const departmentPosition = {
+    LQT: {x: -50, y: 15, z: -220},
+    CXT: {x: -50, y: 15, z: -120},
+};
 const makeFifthFloorData = () => {
     const firstColumn = [
         {name: undefined},
