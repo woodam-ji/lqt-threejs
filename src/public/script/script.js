@@ -1,4 +1,4 @@
-function init() {
+async function init() {
     const scene = new THREE.Scene();
     const innerWidth = window.innerWidth;
     const innerHeight = window.innerHeight;
@@ -26,7 +26,7 @@ function init() {
     controls.update();
 
 
-    const office = makeOffice(scene, renderer, camera);
+    const office = await makeOffice(scene, renderer, camera);
     scene.add(office);
 
     // TODO. 타이머 (light)
@@ -52,7 +52,7 @@ function init() {
     };
 }
 
-const makeOffice = (scene, renderer, camera) => {
+const makeOffice = async (scene, renderer, camera) => {
     // 5F
     const groupCount = 17;
     const userCountPerGroup = 8;
@@ -70,31 +70,33 @@ const makeOffice = (scene, renderer, camera) => {
     const initialX = officeWidth / 2 * -1;
     const initialZ = officeHeight / 2 * -1;
 
-    const floor = createFloor(officeWidth, officeHeight);
+    const floor = await createFloor(officeWidth, officeHeight);
     const fifthFloorHumanInfo = makeFifthFloorData();
-    createCeiling(scene, officeWidth, officeHeight, groupCount,initialX + 30, initialZ + 12.5);
+    await createCeiling(scene, officeWidth, officeHeight, groupCount, initialX + 30, initialZ + 12.5);
 
-    createPillars(floor, fifthFloorHumanInfo.firstColumnPillarList, initialX + 5, initialZ + 12.5);
-    createTables(floor, groupCount, userCountPerGroup, initialX + 15, initialZ + 10);
-    createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 15, initialZ + 12.5);
-    createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
-    createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 45);
-    createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+15, initialZ+5);
+    await createPillars(floor, fifthFloorHumanInfo.firstColumnPillarList, initialX + 5, initialZ + 12.5);
+    await createTables(floor, groupCount, userCountPerGroup, initialX + 15, initialZ + 10);
+    await createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 15, initialZ + 12.5);
+    await createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
+    await createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 45);
+    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+15, initialZ+5);
 
     // 두번째 열
-    createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 55, initialZ + 12.5);
-    createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ + 10);
-    createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 65, initialZ + 12.5);
-    createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ+ 10);
-    createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX+65, initialZ+5);
+    await createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 55, initialZ + 12.5);
+    await createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ + 10);
+    await createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 65, initialZ + 12.5);
+    await createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ+ 10);
+    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX+65, initialZ+5);
 
     // 세번째 열
     const thirdColumnGroupCount = 10;
-    createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 105, initialZ + 12.5);
-    createTables(floor, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ + 25);
-    createPartitions(floor, thirdColumnGroupCount, secondRowPartitionCountPerGroup, initialX + 145, initialZ + 28);
-    createMonitors(floor, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ+ 25);
-    createHumans(renderer, floor, camera, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX+145, initialZ+20);
+    await createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 105, initialZ + 12.5);
+    await createTables(floor, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ + 25);
+    await createPartitions(floor, thirdColumnGroupCount, secondRowPartitionCountPerGroup, initialX + 145, initialZ + 28);
+    await createMonitors(floor, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ+ 25);
+    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX+145, initialZ+20);
     return floor;
 };
-window.onload = init();
+window.onload = (async function() {
+    await init();
+});
