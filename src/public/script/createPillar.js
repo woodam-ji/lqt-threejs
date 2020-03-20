@@ -1,9 +1,14 @@
-const createPillar = pillarText => {
+const createPillar = () => {
     return new Promise(async resolve => {
         const pillarGeometry = await createBoxGeometry(5, 25, 5);
         const pillarMaterial = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
         const pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
+        resolve(pillar);
+    })
+};
 
+const createPillarText = (pillar, pillarText) => {
+    return new Promise(async resolve => {
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
         context.font = "Bold 13px Arial";
@@ -23,19 +28,22 @@ const createPillar = pillarText => {
         mesh.position.set(23, 9, 2.6);
         pillar.add(mesh);
 
-        resolve(pillar);
+        resolve();
     })
 };
 
 const createPillars = (scene, pillarList, x, initialZ) => {
-    return new Promise( async resolve => {
+    return new Promise(async resolve => {
+        const pillarGroup = new THREE.Group();
+        const pillar = await createPillar();
         await asyncForEach(pillarList, async (pillarText, index) => {
-            const pillar = await createPillar(pillarText);
-            pillar.position.x = x;
-            pillar.position.y = 13;
-            pillar.position.z = initialZ + (index * 60);
-            scene.add(pillar);
+            const newPillar = pillar.clone();
+            await createPillarText(newPillar, pillarText);
+
+            newPillar.position.set(x, 13, initialZ + (index * 60));
+            pillarGroup.add(newPillar);
         });
+        scene.add(pillarGroup);
         resolve();
     });
 };
@@ -43,13 +51,11 @@ const createPillars = (scene, pillarList, x, initialZ) => {
 const createWalls = (scene, count, x, z) => {
     return new Promise(async resolve => {
         const wallGroup = new THREE.Group();
-
+        const wall = await createWall();
         for (let wallCount = 0; wallCount < count; wallCount++) {
-            const wall = await createWall();
-            wall.position.x = x;
-            wall.position.y = 13;
-            wall.position.z = (wallCount * 60) + z;
-            wallGroup.add(wall);
+            const cloneWall = wall.clone();
+            cloneWall.position.set(x, 13, (wallCount * 60) + z);
+            wallGroup.add(cloneWall);
         }
         scene.add(wallGroup);
         resolve();

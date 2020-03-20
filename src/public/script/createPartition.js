@@ -1,18 +1,18 @@
 const createPartitions = (scene, groupCount, partitionCountPerGroup, initialX, initialZ) => {
     return new Promise(async resolve => {
         const partitionGroup = new THREE.Group();
+        const partition = await createPartition();
         for (let i = 0; i < groupCount; i++) {
             let groupZ = i * 30 + initialZ;
             for (let j = 0; j < partitionCountPerGroup; j++) {
                 const x = 10 * (j % groupCount) + initialX;
                 let z = groupZ;
 
-                if (Math.floor(j / partitionCountPerGroup) === 1) {
-                    z += 6;
-                }
+                if (Math.floor(j / partitionCountPerGroup) === 1) z += 6;
 
-                const partition = await createPartition(x, 5, z);
-                partitionGroup.add(partition);
+                const newPartition = partition.clone();
+                newPartition.position.set(x, 5, z);
+                partitionGroup.add(newPartition);
             }
         }
 

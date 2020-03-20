@@ -16,12 +16,9 @@ const createBoxGeometry = (width, height, depth, ...args) => {
     })
 };
 
-const createTable = (tableGeometry, image, x, y, z) => {
+const createTable = (tableGeometry, image) => {
     return new Promise(async resolve => {
         const table = await createTextureMesh(tableGeometry, image);
-        table.position.x = x;
-        table.position.y = y;
-        table.position.z = z;
 
         resolve(addLegToTable(table));
     })
@@ -61,6 +58,10 @@ const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initia
         const tableGeometry = await createBoxGeometry(10, 0.5, 5);
         const oneSideMaxCount = userCountPerGroup / 2;
         const tableGroup = new THREE.Group();
+        const table = await createTable(
+            tableGeometry,
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s");
+
         for (let i = 0; i < groupCount; i++) {
             const groupZ = i * 30 + initialZ;
             for (let j = 0; j < userCountPerGroup; j++) {
@@ -68,13 +69,10 @@ const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initia
                 const isLastItem = Math.floor(j / oneSideMaxCount) === 1;
                 let z = groupZ;
                 if (isLastItem) z += 6;
-                const table = await createTable(
-                    tableGeometry,
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
-                    x, 5, z
-                );
+                const newTable = table.clone();
+                newTable.position.set(x, 5, z);
 
-                tableGroup.add(table);
+                tableGroup.add(newTable);
             }
         }
         tableGroup.receiveShadow = true;

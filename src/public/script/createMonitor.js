@@ -55,18 +55,18 @@ const addDisplayToTop = ({monitorBottom, monitorTop}) => {
     })
 };
 
-const createMonitor = (x, y, z, name) => {
+const createMonitor = () => {
     return new Promise(async resolve => {
         let monitor = await addMonitorBottom();
         monitor = await addMonitorMiddleToBottom(monitor);
         monitor = await addTopToMiddle(monitor);
         monitor = await addDisplayToTop(monitor);
-        monitor.position.x = x;
-        monitor.position.y = y;
-        monitor.position.z = z;
-        await createNameTag(monitor, name);
+        monitor.position.x = 0;
+        monitor.position.y = 5.5;
+        monitor.position.x = 0;
+        await createNameTag(monitor);
 
-        resolve(monitor)
+        resolve(monitor);
     })
 };
 
@@ -75,6 +75,8 @@ const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initia
         const oneSideMaxCount = userCountPerGroup / 2;
         const monitorGroup = new THREE.Group();
         let humanCount = 0;
+        const monitor = await createMonitor();
+
         for (let i = 0; i < groupCount; i++) {
             let groupZ = i * 30 + initialZ;
 
@@ -83,26 +85,26 @@ const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initia
                 const x = 10 * (j % oneSideMaxCount) + initialX;
                 let z = groupZ;
 
-                if (Math.floor(j / oneSideMaxCount) === 1) {
-                    z += 6;
-                }
+                if (Math.floor(j / oneSideMaxCount) === 1) z += 6;
+                if (!!humanInfo.name) {
+                    const newMonitor = monitor.clone();
+                    newMonitor.position.set(x, 5.5, z);
 
-                if (!!humanInfo.name){
-                    const monitor = await createMonitor(x, 5.5, z, humanInfo.name);
-                    if (j < oneSideMaxCount) monitor.rotation.y = Math.PI;
-                    monitorGroup.add(monitor);
+                    await createName(newMonitor, name);
+
+                    if (j < oneSideMaxCount) newMonitor.rotation.y = Math.PI;
+                    monitorGroup.add(newMonitor);
                 }
                 humanCount++;
             }
         }
-        // monitorGroup.castShadow = true;
-        // monitorGroup.receiveShadow = true;
+
         scene.add(monitorGroup);
         resolve();
     })
 };
 
-const createNameTag = (scene, name = '') => {
+const createNameTag = (scene) => {
     return new Promise(resolve => {
         const loader = new THREE.SVGLoader();
 
@@ -131,7 +133,7 @@ const createNameTag = (scene, name = '') => {
                 }
             }
 
-            await createName(group, name);
+            // await createName(group, name);
             group.scale.set(0.02, 0.02, 0.02);
             group.position.x = -9;
             group.position.y = 1;
