@@ -39,13 +39,13 @@ const createTableLegMesh = (tableLegGeometry, tableLegMaterial, x, y, z) => {
 
 const addLegToTable = (tableMesh) => {
     return new Promise(async resolve => {
-        const tableLegGeometry = await createBoxGeometry(0.5, 5, 0.5);
+        const tableLegGeometry = await createBoxGeometry(0.05, .5, 0.05);
         const tableLegMaterial = new THREE.MeshStandardMaterial({color: '#444242'});
 
-        const tableLeg1 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, 4.5, -2.4, -2.2);
-        const tableLeg2 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, -4.5, -2.4, -2.2);
-        const tableLeg3 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, -4.5, -2.4, 2.2);
-        const tableLeg4 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, 4.5, -2.4, 2.2);
+        const tableLeg1 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, 0.45, -.24, -.22);
+        const tableLeg2 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, -.45, -.24, -.22);
+        const tableLeg3 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, -.45, -.24, .22);
+        const tableLeg4 = await createTableLegMesh(tableLegGeometry, tableLegMaterial, .45, -.24, .22);
 
         tableMesh.add(tableLeg1);
         tableMesh.add(tableLeg2);
@@ -58,20 +58,20 @@ const addLegToTable = (tableMesh) => {
 
 const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initialZ = 0) => {
     return new Promise(async resolve => {
-        const tableGeometry = await createBoxGeometry(10, 0.5, 5);
+        const tableGeometry = await createBoxGeometry(1, 0.05, .5);
         const oneSideMaxCount = userCountPerGroup / 2;
         const tableGroup = new THREE.Group();
         for (let i = 0; i < groupCount; i++) {
-            const groupZ = i * 30 + initialZ;
+            const groupZ = i * 3 + initialZ;
             for (let j = 0; j < userCountPerGroup; j++) {
-                const x = 10 * (j % oneSideMaxCount) + initialX;
+                const x = 1 * (j % oneSideMaxCount) + initialX;
                 const isLastItem = Math.floor(j / oneSideMaxCount) === 1;
                 let z = groupZ;
-                if (isLastItem) z += 6;
+                if (isLastItem) z += .6;
                 const table = await createTable(
                     tableGeometry,
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
-                    x, 5, z
+                    x, .5, z
                 );
 
                 tableGroup.add(table);

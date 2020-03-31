@@ -1,6 +1,6 @@
 const createPillar = pillarText => {
     return new Promise(async resolve => {
-        const pillarGeometry = await createBoxGeometry(5, 25, 5);
+        const pillarGeometry = await createBoxGeometry(.5, 2.5, .5);
         const pillarMaterial = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
         const pillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
 
@@ -8,7 +8,7 @@ const createPillar = pillarText => {
         const context = canvas.getContext('2d');
         context.font = "Bold 13px Arial";
         context.fillStyle = "rgba(0,0,0,1)";
-        context.fillText(pillarText, 0, 60);
+        context.fillText(pillarText, 0, 6);
 
         const texture = new THREE.Texture(canvas);
         texture.needsUpdate = true;
@@ -17,10 +17,10 @@ const createPillar = pillarText => {
         material.transparent = true;
 
         const mesh = new THREE.Mesh(
-            new THREE.PlaneGeometry(50, 10),
+            new THREE.PlaneGeometry(5, 1),
             material
         );
-        mesh.position.set(23, 9, 2.6);
+        mesh.position.set(2.3, .9, .26);
         pillar.add(mesh);
 
         resolve(pillar);
@@ -32,8 +32,8 @@ const createPillars = (scene, pillarList, x, initialZ) => {
         await asyncForEach(pillarList, async (pillarText, index) => {
             const pillar = await createPillar(pillarText);
             pillar.position.x = x;
-            pillar.position.y = 13;
-            pillar.position.z = initialZ + (index * 60);
+            pillar.position.y = 1.3;
+            pillar.position.z = initialZ + (index * 6);
             scene.add(pillar);
         });
         resolve();
@@ -47,8 +47,8 @@ const createWalls = (scene, count, x, z) => {
         for (let wallCount = 0; wallCount < count; wallCount++) {
             const wall = await createWall();
             wall.position.x = x;
-            wall.position.y = 13;
-            wall.position.z = (wallCount * 60) + z;
+            wall.position.y = 1.3;
+            wall.position.z = (wallCount * 6) + z;
             wallGroup.add(wall);
         }
         scene.add(wallGroup);
@@ -58,7 +58,7 @@ const createWalls = (scene, count, x, z) => {
 
 const createWall = () => {
     return new Promise(resolve => {
-        const wallGeometry = new THREE.BoxGeometry(2, 25, 25);
+        const wallGeometry = new THREE.BoxGeometry(.2, 2.5, 2.5);
         const wallMaterials = [
             new THREE.MeshLambertMaterial({color: 0xffffff, transparent: false, opacity: 0.8, side: THREE.DoubleSide}),
             new THREE.MeshLambertMaterial({color: 0xffffff, transparent: false, opacity: 0.8, side: THREE.DoubleSide}),

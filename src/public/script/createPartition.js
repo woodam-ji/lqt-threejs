@@ -2,16 +2,16 @@ const createPartitions = (scene, groupCount, partitionCountPerGroup, initialX, i
     return new Promise(async resolve => {
         const partitionGroup = new THREE.Group();
         for (let i = 0; i < groupCount; i++) {
-            let groupZ = i * 30 + initialZ;
+            let groupZ = i * 3 + initialZ;
             for (let j = 0; j < partitionCountPerGroup; j++) {
-                const x = 10 * (j % groupCount) + initialX;
+                const x = 1 * (j % groupCount) + initialX;
                 let z = groupZ;
 
                 if (Math.floor(j / partitionCountPerGroup) === 1) {
-                    z += 6;
+                    z += .6;
                 }
 
-                const partition = await createPartition(x, 5, z);
+                const partition = await createPartition(x, .5, z);
                 partitionGroup.add(partition);
             }
         }
@@ -36,7 +36,7 @@ const createPartition = (x, y, z) => {
 
 const addPartitionBottom = () => {
     return new Promise(async resolve => {
-        const partitionBottomGeometry = await createBoxGeometry(10, 10, 1);
+        const partitionBottomGeometry = await createBoxGeometry(1, 1, .1);
         const partitionMaterial = new THREE.MeshLambertMaterial({color: 0xBBBBBB});
         const partitionBottom = new THREE.Mesh(partitionBottomGeometry, partitionMaterial);
         partitionBottomGeometry.castShadow = true;
@@ -47,12 +47,12 @@ const addPartitionBottom = () => {
 
 const addDividerToBottom = partitionBottom => {
     return new Promise(async resolve => {
-        const partitionDividerGeometry = await createBoxGeometry(10, .3, 1);
+        const partitionDividerGeometry = await createBoxGeometry(1, .03, .1);
         const partitionDividerMaterial = new THREE.MeshLambertMaterial({color: 0x333333});
         const partitionDivider = new THREE.Mesh(partitionDividerGeometry, partitionDividerMaterial);
         partitionDivider.castShadow = true;
         partitionBottom.add(partitionDivider);
-        partitionDivider.position.y = 5.15;
+        partitionDivider.position.y = .515;
 
         resolve({partitionBottom, partitionDivider})
     })
@@ -60,12 +60,12 @@ const addDividerToBottom = partitionBottom => {
 
 const addTopToDivider = ({partitionBottom, partitionDivider}) => {
     return new Promise(async resolve => {
-        const partitionTopGeometry = await createBoxGeometry(10, 2, 1);
+        const partitionTopGeometry = await createBoxGeometry(1, .2, .1);
         const partitionMaterial = new THREE.MeshLambertMaterial({color: 0xBBBBBB});
         const partitionTop = new THREE.Mesh(partitionTopGeometry, partitionMaterial);
         partitionTop.castShadow = true;
         partitionDivider.add(partitionTop);
-        partitionTop.position.y = 1.15;
+        partitionTop.position.y = .115;
 
         resolve(partitionBottom)
     });

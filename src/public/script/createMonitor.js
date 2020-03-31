@@ -1,6 +1,6 @@
 const addMonitorBottom = () => {
     return new Promise(async resolve => {
-        const monitorBottomGeometry = await createBoxGeometry(3, .5, 2);
+        const monitorBottomGeometry = await createBoxGeometry(.3, .05, .2);
         const monitorMaterial = new THREE.MeshLambertMaterial({color: 0x555555});
         const monitorBottom = new THREE.Mesh(monitorBottomGeometry, monitorMaterial);
         monitorBottom.castShadow = true;
@@ -11,14 +11,14 @@ const addMonitorBottom = () => {
 
 const addMonitorMiddleToBottom = (monitorBottom) => {
     return new Promise(async resolve => {
-        const monitorMiddleGeometry = await createBoxGeometry(.7, 3, .7);
+        const monitorMiddleGeometry = await createBoxGeometry(.07, .3, .07);
         const monitorMaterial = new THREE.MeshLambertMaterial({color: 0x333333});
         const monitorMiddle = new THREE.Mesh(monitorMiddleGeometry, monitorMaterial);
         monitorMiddle.castShadow = true;
         monitorBottom.add(monitorMiddle);
-        monitorMiddle.position.x = 0;
-        monitorMiddle.position.y = 1;
-        monitorMiddle.position.z = .5;
+        // monitorMiddle.position.x = 0;
+        monitorMiddle.position.y = .1;
+        monitorMiddle.position.z = .05;
 
         resolve({monitorBottom, monitorMiddle});
     })
@@ -26,15 +26,15 @@ const addMonitorMiddleToBottom = (monitorBottom) => {
 
 const addTopToMiddle = ({monitorBottom, monitorMiddle}) => {
     return new Promise(async resolve => {
-        const monitorTopGeometry = await createBoxGeometry(6, 4, .5);
+        const monitorTopGeometry = await createBoxGeometry(.6, .4, .05);
         const monitorMaterial = new THREE.MeshLambertMaterial({color: 0x333333});
         const monitorTop = new THREE.Mesh(monitorTopGeometry, monitorMaterial);
         monitorTop.castShadow = true;
 
         monitorMiddle.add(monitorTop);
-        monitorTop.position.x = 0;
-        monitorTop.position.y = 3;
-        monitorMiddle.position.z = -.5;
+        // monitorTop.position.x = 0;
+        monitorTop.position.y = .3;
+        monitorMiddle.position.z = -.05;
 
         resolve({monitorBottom, monitorTop});
     })
@@ -42,14 +42,14 @@ const addTopToMiddle = ({monitorBottom, monitorMiddle}) => {
 
 const addDisplayToTop = ({monitorBottom, monitorTop}) => {
     return new Promise(async resolve => {
-        const monitorDisplayGeometry = await createBoxGeometry(5, 3.5, .3);
+        const monitorDisplayGeometry = await createBoxGeometry(.5, .35, .03);
         const loader = new THREE.TextureLoader();
         const displayMaterial = new THREE.MeshLambertMaterial({map: loader.load('https://t1.daumcdn.net/cfile/tistory/24E61F335966F29A15')});
         const monitorDisplay = new THREE.Mesh(monitorDisplayGeometry, displayMaterial);
 
         monitorTop.add(monitorDisplay);
-        monitorDisplay.position.z = .13;
-        monitorDisplay.position.y = 0;
+        monitorDisplay.position.z = .013;
+        // monitorDisplay.position.y = 0;
 
         resolve(monitorBottom);
     })
@@ -76,19 +76,19 @@ const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initia
         const monitorGroup = new THREE.Group();
         let humanCount = 0;
         for (let i = 0; i < groupCount; i++) {
-            let groupZ = i * 30 + initialZ;
+            let groupZ = i * 3 + initialZ;
 
             for (let j = 0; j < userCountPerGroup; j++) {
                 const humanInfo = humanInfos[humanCount] ? humanInfos[humanCount] : {};
-                const x = 10 * (j % oneSideMaxCount) + initialX;
+                const x = 1 * (j % oneSideMaxCount) + initialX;
                 let z = groupZ;
 
                 if (Math.floor(j / oneSideMaxCount) === 1) {
-                    z += 6;
+                    z += .6;
                 }
 
                 if (!!humanInfo.name){
-                    const monitor = await createMonitor(x, 5.5, z, humanInfo.name);
+                    const monitor = await createMonitor(x, .55, z, humanInfo.name);
                     if (j < oneSideMaxCount) monitor.rotation.y = Math.PI;
                     monitorGroup.add(monitor);
                 }
@@ -123,7 +123,7 @@ const createNameTag = (scene, name = '') => {
                     const shape = shapes[j];
                     // const geometry = new THREE.ShapeBufferGeometry( shape );
                     const geometry = new THREE.ExtrudeGeometry(shape, {
-                        depth: 4,
+                        depth: .4,
                         bevelEnabled: false
                     });
                     const mesh = new THREE.Mesh(geometry, material);
@@ -132,10 +132,10 @@ const createNameTag = (scene, name = '') => {
             }
 
             await createName(group, name);
-            group.scale.set(0.02, 0.02, 0.02);
-            group.position.x = -9;
-            group.position.y = 1;
-            group.position.z = -.3;
+            group.scale.set(.002, .002, .002);
+            group.position.x = -.9;
+            group.position.y = .1;
+            group.position.z = -.03;
             scene.add(group);
         });
         resolve();

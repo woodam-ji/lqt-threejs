@@ -1,6 +1,6 @@
 const createFloor = (officeWidth, officeHeight) => {
     return new Promise(resolve => {
-        const floorGeometry = new THREE.BoxGeometry(officeWidth, 2, officeHeight);
+        const floorGeometry = new THREE.BoxGeometry(officeWidth, .2, officeHeight);
         const floorMaterial = new THREE.MeshStandardMaterial({color: 0xc5c5c5});
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.castShadow = true;
@@ -11,10 +11,10 @@ const createFloor = (officeWidth, officeHeight) => {
 
 const createCeiling = (scene, officeWidth, officeHeight, groupCount, initialX, initialZ) => {
     return new Promise(resolve => {
-        const ceilingGeometry = new THREE.BoxGeometry(officeWidth, 2, officeHeight);
+        const ceilingGeometry = new THREE.BoxGeometry(officeWidth, .2, officeHeight);
         const ceilingMaterial = new THREE.MeshBasicMaterial({color: 0xc5c5c5});
         const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
-        ceiling.position.y = 26;
+        ceiling.position.y = 2.6;
         scene.add(ceiling);
         createCeilingLights(ceiling, groupCount, initialX, initialZ);
         resolve();
@@ -30,14 +30,14 @@ const createCeilingLights = (ceiling, groupCount, initialX, initialZ) => {
         const ceilingLightGroup = new THREE.Group();
 
         for (let j = 0; j < ceilingCountPerGroup; j++) {
-            const x = 42 * (j % ceilingCountPerGroup) + initialX;
+            const x = 4.2 * (j % ceilingCountPerGroup) + initialX;
             const newCeilingLight = ceilingLight.clone();
-            newCeilingLight.position.set(x, -1, 0);
+            newCeilingLight.position.set(x, -.1, 0);
             ceilingLightGroup.add(newCeilingLight);
         }
 
         for (let i = 0; i < groupCount; i++) {
-            let z = i * 30 + initialZ;
+            let z = i * 3 + initialZ;
             const newCeilingLights = ceilingLightGroup.clone();
             newCeilingLights.position.setZ(z);
             lightGroup.add(newCeilingLights);
@@ -59,12 +59,12 @@ const createCeilingLights = (ceiling, groupCount, initialX, initialZ) => {
 
 const createCeilingLight = () => {
     return new Promise(resolve => {
-        const ceilingLightGeometry = new THREE.BoxGeometry(15, 1, 3);
+        const ceilingLightGeometry = new THREE.BoxGeometry(1.5, .1, .3);
         const ceilingLightMaterial = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
         const ceilingLight = new THREE.Mesh(ceilingLightGeometry, ceilingLightMaterial);
 
-        const pointLight = new THREE.PointLight(0xFFFFFF, 1, 30);
-        pointLight.position.set(5, -10, -3);
+        const pointLight = new THREE.PointLight(0xFFFFFF, 1, 3);
+        pointLight.position.set(.5, -1, -.3);
         ceilingLight.add(pointLight);
 
         resolve(ceilingLight)
