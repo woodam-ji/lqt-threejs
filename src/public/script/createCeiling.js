@@ -1,12 +1,9 @@
 const createFloor = (officeWidth, officeHeight) => {
-    return new Promise(resolve => {
-        const floorGeometry = new THREE.BoxGeometry(officeWidth, 2, officeHeight);
-        const floorMaterial = new THREE.MeshStandardMaterial({color: 0xc5c5c5});
-        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.castShadow = true;
-
-        resolve(floor)
-    })
+    const floorGeometry = new THREE.BoxGeometry(officeWidth, 2, officeHeight);
+    const floorMaterial = new THREE.MeshStandardMaterial({color: 0xc5c5c5});
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.castShadow = true;
+    return floor;
 };
 
 const createCeiling = (scene, officeWidth, officeHeight, groupCount, initialX, initialZ) => {

@@ -26,7 +26,13 @@ async function init() {
     controls.update();
 
 
-    const office = await makeOffice(scene, renderer, camera);
+    // const office = await makeOffice(scene, renderer, camera);
+    const gen = makeOffice2(scene, renderer, camera);
+    let next = gen.next();
+    while (!next.done) {
+        next = gen.next();
+    }
+    const office = next.value;
     scene.add(office);
 
     // TODO. 타이머 (light)
@@ -50,6 +56,51 @@ async function init() {
         // boy.position.z -= clock.getDelta();
         requestAnimationFrame(renderScene);
     };
+}
+
+function* makeOffice2(scene, renderer, camera) {
+    const groupCount = 17;
+    const userCountPerGroup = 8;
+    const partitionCountPerGroup = userCountPerGroup / 2;
+
+    const secondRowUserCountPerGroup = 6;
+    const secondRowPartitionCountPerGroup = secondRowUserCountPerGroup / 2;
+
+    const thirdColumnUserCountPerGroup = 6;
+    const thirdColumnPartitionCountPerGroup = thirdColumnUserCountPerGroup / 2;
+
+    const officeWidth = (partitionCountPerGroup + secondRowPartitionCountPerGroup + thirdColumnPartitionCountPerGroup) * 10 + 30 + 50;
+    const officeHeight = groupCount * 30;
+
+    const initialX = officeWidth / 2 * -1;
+    const initialZ = officeHeight / 2 * -1;
+
+    const floor = createFloor(officeWidth, officeHeight);
+    const fifthFloorHumanInfo = makeFifthFloorData();
+    yield createCeiling(scene, officeWidth, officeHeight, groupCount, initialX + 30, initialZ + 12.5);
+
+    yield createPillars(floor, fifthFloorHumanInfo.firstColumnPillarList, initialX + 5, initialZ + 12.5);
+    yield createTables(floor, groupCount, userCountPerGroup, initialX + 15, initialZ + 10);
+    yield createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 15, initialZ + 12.5);
+    yield createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 15, initialZ+ 10);
+    yield createWalls(floor, Math.floor(groupCount/2), initialX + 8.5, initialZ + 45);
+    yield createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+15, initialZ+5);
+
+    // 두번째 열
+    yield createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 55, initialZ + 12.5);
+    yield createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ + 10);
+    yield createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 65, initialZ + 12.5);
+    yield createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 65, initialZ+ 10);
+    yield createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX+65, initialZ+5);
+
+    // 세번째 열
+    const thirdColumnGroupCount = 10;
+    yield createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 105, initialZ + 12.5);
+    yield createTables(floor, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ + 25);
+    yield createPartitions(floor, thirdColumnGroupCount, secondRowPartitionCountPerGroup, initialX + 145, initialZ + 28);
+    yield createMonitors(floor, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 145, initialZ+ 25);
+    yield createHumans(renderer, floor, camera, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX+145, initialZ+20);
+    return floor;
 }
 
 const makeOffice = async (scene, renderer, camera) => {
