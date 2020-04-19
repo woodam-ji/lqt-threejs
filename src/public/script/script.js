@@ -4,15 +4,15 @@ async function init() {
     const innerHeight = window.innerHeight;
     const rendererStats  = new ThreeEx.RendererStats();
     const camera = new THREE.PerspectiveCamera(80, innerWidth / innerHeight, 0.1, 1000);
-    // camera.position.x = 70;
-    // camera.position.y = 20;
-    camera.position.z = 10;
+    camera.position.x = 7;
+    camera.position.y = 2;
+    camera.position.z = 1;
     camera.lookAt(scene.position);
 
 
     scene.background = new THREE.Color('skyblue');
     // scene.overrideMaterial = new THREE.MeshBasicMaterial( { color: 'green' } );
-    camera.far = 100000;
+    // camera.far = 100000;
     camera.updateProjectionMatrix();
 
 

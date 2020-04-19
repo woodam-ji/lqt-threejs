@@ -27,8 +27,8 @@ const departmentColor = {
     TC: '#e06666',
 };
 const departmentPosition = {
-    LQT: {x: -50, y: 15, z: -220},
-    CXT: {x: -50, y: 15, z: -120},
+    LQT: {x: -5, y: 1.5, z: -22},
+    CXT: {x: -5, y: 1.5, z: -12},
 };
 const makeFifthFloorData = () => {
     const firstColumn = [
