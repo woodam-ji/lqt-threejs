@@ -2,6 +2,7 @@ async function init() {
     const scene = new THREE.Scene();
     const innerWidth = window.innerWidth;
     const innerHeight = window.innerHeight;
+    const rendererStats  = new ThreeEx.RendererStats();
     const camera = new THREE.PerspectiveCamera(80, innerWidth / innerHeight, 0.1, 1000);
     // camera.position.x = 70;
     // camera.position.y = 20;
@@ -28,8 +29,13 @@ async function init() {
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     // controls.update();
 
+    rendererStats.domElement.style.position = 'absolute';
+    rendererStats.domElement.style.left = '0px';
+    rendererStats.domElement.style.bottom = '0px';
+    document.body.appendChild( rendererStats.domElement );
     new function renderScene() {
         renderer.render(scene, camera);
+        rendererStats.update(renderer);
         // TODO. 캐릭터 걸어다니도록
         // boy.position.z -= clock.getDelta();
         requestAnimationFrame(renderScene);
