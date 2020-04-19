@@ -58,7 +58,7 @@ const createWalls = (scene, count, x, z) => {
 
 const createWall = () => {
     return new Promise(resolve => {
-        const wallGeometry = new THREE.BoxGeometry(.2, 2.5, 2.5);
+        const wallGeometry = new THREE.BoxGeometry(.2, 2.5, 2);
         const wallMaterials = [
             new THREE.MeshLambertMaterial({color: 0xffffff, transparent: false, opacity: 0.8, side: THREE.DoubleSide}),
             new THREE.MeshLambertMaterial({color: 0xffffff, transparent: false, opacity: 0.8, side: THREE.DoubleSide}),

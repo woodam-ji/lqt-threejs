@@ -42,7 +42,7 @@ const makeHuman = (hairColor, isWoman, shirtColor, pantsColor, renderer, scene, 
         const headMaterial = new THREE.MeshLambertMaterial({color: "#FFE4C4"});
         const head = new THREE.Mesh(headGeometry, headMaterial);
 
-        const hairGeometry = new THREE.SphereGeometry(.13, 16, 16, 0, 6.3, 0, 1.5);
+        const hairGeometry = new THREE.SphereGeometry(.121, 16, 16, 0, 6.3, 0, 1.5);
         const hairMaterial = new THREE.MeshLambertMaterial({color: hairColor || "#424242"});
         const hair = new THREE.Mesh(hairGeometry, hairMaterial);
         head.add(hair);
@@ -121,15 +121,15 @@ const makeHuman = (hairColor, isWoman, shirtColor, pantsColor, renderer, scene, 
         if (isWoman) await makeSkirt(body);
         else await makePants(leftLeg, rightLeg, pantsColor);
 
-        const footGeometry = new THREE.BoxGeometry(.25, .1, .35);
+        const footGeometry = new THREE.BoxGeometry(.11, .06, .15);
         const footMaterial = new THREE.MeshLambertMaterial({color: '#000000'});
         const foot = new THREE.Mesh(footGeometry, footMaterial);
         const leftFoot = foot.clone();
         const rightFoot = foot.clone();
-        leftFoot.position.z = .1;
-        leftFoot.position.y = -.5;
-        rightFoot.position.z = .1;
-        rightFoot.position.y = -.5;
+        leftFoot.position.z = .03;
+        leftFoot.position.y = -.25;
+        rightFoot.position.z = .03;
+        rightFoot.position.y = -.25;
         leftLeg.add(leftFoot);
         rightLeg.add(rightFoot);
 
@@ -160,24 +160,23 @@ const makeHuman = (hairColor, isWoman, shirtColor, pantsColor, renderer, scene, 
         // };
 
         head.position.y = .88;
-        // head.scale.set(0.05, 0.05, 0.05);
         resolve(head);
     })
 };
 
 const makeLongHair = (head, color) => {
     return new Promise(resolve => {
-        const longHairGeometry = new THREE.SphereGeometry(.1, 3.2, 3.2);
+        const longHairGeometry = new THREE.SphereGeometry(.03, 16, 16);
         const longHairMaterial = new THREE.MeshLambertMaterial({color: color || "#424242"});
         const longHair = new THREE.Mesh(longHairGeometry, longHairMaterial);
-        longHair.position.z = -.45;
+        longHair.position.z = -.13;
 
-        const longHairTailGeometry = new THREE.CylinderGeometry(0.05, 0.08, .7, 32);
+        const longHairTailGeometry = new THREE.CylinderGeometry(0.015, 0.02, .3, 16);
         const longHairTailMaterial = new THREE.MeshLambertMaterial({color: color || "#424242"});
         const longHairTail = new THREE.Mesh(longHairTailGeometry, longHairTailMaterial);
-        longHairTail.position.z = -.55;
-        longHairTail.position.y = -.4;
-        longHairTail.rotation.x = -5;
+        longHairTail.position.z = -.15;
+        longHairTail.position.y = -.025;
+        longHairTail.rotation.x = -5.4;
         head.add(longHairTail);
         head.add(longHair);
         resolve();
@@ -191,8 +190,8 @@ const makePants = (leftLeg, rightLeg, pantsColor) => {
         const pants = new THREE.Mesh(pantsGeometry, pantsMaterial);
         const leftLegPants = pants.clone();
         const rightLegPants = pants.clone();
-        leftLegPants.position.y = .015;
-        rightLegPants.position.y = .01;
+        leftLegPants.position.y = .018;
+        rightLegPants.position.y = .018;
         leftLeg.add(leftLegPants);
         rightLeg.add(rightLegPants);
         resolve();
