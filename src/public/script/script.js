@@ -2,11 +2,9 @@ async function init() {
     const scene = new THREE.Scene();
     const innerWidth = window.innerWidth;
     const innerHeight = window.innerHeight;
-    const rendererStats  = new ThreeEx.RendererStats();
+    const rendererStats = new ThreeEx.RendererStats();
     const camera = new THREE.PerspectiveCamera(80, innerWidth / innerHeight, 0.1, 1000);
-    camera.position.x = 7;
-    camera.position.y = 2;
-    camera.position.z = 1;
+    camera.position.set(7, 2, 1);
     camera.lookAt(scene.position);
 
 
@@ -32,7 +30,7 @@ async function init() {
     rendererStats.domElement.style.position = 'absolute';
     rendererStats.domElement.style.left = '0px';
     rendererStats.domElement.style.bottom = '0px';
-    document.body.appendChild( rendererStats.domElement );
+    document.body.appendChild(rendererStats.domElement);
     new function renderScene() {
         renderer.render(scene, camera);
         rendererStats.update(renderer);
@@ -47,19 +45,22 @@ async function init() {
     // TODO. 타이머 (light)
     // 불 끄러 가도록
     // 모니터 워크로그 연동
+    window.addEventListener( 'resize', function () {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+    }, false );
 
-    document.getElementById('selectDepartment').addEventListener('change', (e)=>{
+    document.getElementById('selectDepartment').addEventListener('change', (e) => {
         const department = e.currentTarget.value;
         const updateCameraPosition = departmentPosition[department];
-        if (updateCameraPosition){
+        if (updateCameraPosition) {
             // new TWEEN.Tween( camera.position ).to( updateCameraPosition, 600 )
             //     .easing( TWEEN.Easing.Sinusoidal.EaseInOut).start();
             camera.position.set(updateCameraPosition.x, updateCameraPosition.y, updateCameraPosition.z);
             controls.update();
         }
     });
-
-
 }
 
 const makeOffice = async (scene, renderer, camera) => {
@@ -82,31 +83,49 @@ const makeOffice = async (scene, renderer, camera) => {
 
     const floor = await createFloor(officeWidth, officeHeight);
     const fifthFloorHumanInfo = makeFifthFloorData();
+    console.time('createCeiling');
     await createCeiling(scene, officeWidth, officeHeight, groupCount, initialX + 3, initialZ + 1.25);
+    console.timeEnd('createCeiling');
 
+    console.time('createPillars');
     await createPillars(floor, fifthFloorHumanInfo.firstColumnPillarList, initialX + 5.5, initialZ + 1.25);
-    await createTables(floor, groupCount, userCountPerGroup, initialX + 1.5, initialZ + 1);
-    await createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 1.5, initialZ + 1.25);
-    await createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 1.5, initialZ+ 1.0);
-    await createWalls(floor, Math.floor(groupCount/2), initialX + .8, initialZ + 4.5);
-    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX+1.5, initialZ+.5);
+    console.timeEnd('createPillars');
 
+    console.time('createTables');
+    await createTables(floor, groupCount, userCountPerGroup, initialX + 1.5, initialZ + 1);
+    console.timeEnd('createTables');
+
+    console.time('createPartitions');
+    await createPartitions(floor, groupCount, partitionCountPerGroup, initialX + 1.5, initialZ + 1.25);
+    console.timeEnd('createPartitions');
+
+    console.time('createMonitors');
+    await createMonitors(floor, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 1.5, initialZ + 1.0);
+    console.timeEnd('createMonitors');
+
+    console.time('createWalls');
+    await createWalls(floor, Math.floor(groupCount/2), initialX + .8, initialZ + 4.5);
+    console.timeEnd('createWalls');
+
+    console.time('createHumans');
+    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 1.5, initialZ + .5);
+    console.timeEnd('createHumans');
     // 두번째 열
     // await createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 5.5, initialZ + 1.25);
     await createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 6.5, initialZ + 1);
     await createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 6.5, initialZ + 1.25);
-    await createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 6.5, initialZ+ 1);
-    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX+6.5, initialZ+.5);
+    await createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 6.5, initialZ + 1);
+    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 6.5, initialZ + .5);
     //
     // // 세번째 열
     const thirdColumnGroupCount = 10;
     await createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 10.5, initialZ + 1.25);
     await createTables(floor, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 14.5, initialZ + 2.5);
     await createPartitions(floor, thirdColumnGroupCount, secondRowPartitionCountPerGroup, initialX + 14.5, initialZ + 2.8);
-    await createMonitors(floor, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 14.5, initialZ+ 2.5);
-    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX+14.5, initialZ+2);
+    await createMonitors(floor, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 14.5, initialZ + 2.5);
+    await createHumans(renderer, floor, camera, fifthFloorHumanInfo.thirdColumn, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 14.5, initialZ + 2);
     return floor;
 };
-window.onload = (async function() {
+window.onload = (async function () {
     await init();
 });
