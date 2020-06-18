@@ -25,23 +25,19 @@
         <div id="threejs_scene"></div>
         <button id="toggleLight">{{title}}</button>
         <select id="selectDepartment">
-            <option disabled="disabled">이동할 부서를 선택해주세요.</option>
+            <option disabled="disabled">이동할 부서를 선택해 주세요.</option>
             <option value="LQT">LQT</option>
             <option value="CXT">CXT</option>
         </select>
         <!-- My threeJS Javascript codes here -->
         <script>
-            var a = `{{{title}}}`;
-            const masterArr = {{{json infos}}};
-            console.log(masterArr);
-            console.log("BB", a);
+            const a = `{{{title}}}`;
+            const masterArr = `{{{json infos}}}`;
         </script>
         <script src="public/script/lib/fx.min.js"></script>
-        <script src="public/script/three.js"></script>
-        <script src="public/script/OrbitControls.js"></script>
-        <script src="public/script/SVGLoader.js"></script>
-        <script src="public/script/threeEx.js"></script>
-        <script src="public/script/starts.min.js"></script>
+        <script src="public/script/lib/three.js"></script>
+        <script src="public/script/lib/OrbitControls.js"></script>
+        <script src="public/script/lib/SVGLoader.js"></script>
         <script type="text/javascript" src="public/script/utils/asyncForeach.js"></script>
         <script type="text/javascript" src="public/script/createTable.js"></script>
         <script type="text/javascript" src="public/script/createPillar.js"></script>
@@ -49,7 +45,9 @@
         <script type="text/javascript" src="public/script/createMonitor.js"></script>
         <script type="text/javascript" src="public/script/createCeiling.js"></script>
         <script type="text/javascript" src="public/script/createCharacter.js"></script>
+<!--        <script type="text/javascript" src="public/script/data/Infos.js"></script>-->
         <script type="text/javascript" src="public/script/data/fifthFloor.js"></script>
+        <script type="text/javascript" src="public/script/data/forthFloor.js"></script>
         <script type="text/javascript" src="public/script/script.js"></script>
     </body>
 </html>

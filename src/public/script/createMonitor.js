@@ -80,7 +80,7 @@ const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initia
 
             for (let j = 0; j < userCountPerGroup; j++) {
                 const humanInfo = humanInfos[humanCount] ? humanInfos[humanCount] : {};
-                const x = 1 * (j % oneSideMaxCount) + initialX;
+                const x = (j % oneSideMaxCount) + initialX;
                 let z = groupZ;
 
                 if (Math.floor(j / oneSideMaxCount) === 1) {

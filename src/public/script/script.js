@@ -2,17 +2,11 @@ async function init() {
     const scene = new THREE.Scene();
     const innerWidth = window.innerWidth;
     const innerHeight = window.innerHeight;
-    const rendererStats = new ThreeEx.RendererStats();
     const camera = new THREE.PerspectiveCamera(80, innerWidth / innerHeight, 0.1, 1000);
     camera.position.set(7, 2, 1);
     camera.lookAt(scene.position);
-
-
-    scene.background = new THREE.Color('skyblue');
-    // scene.overrideMaterial = new THREE.MeshBasicMaterial( { color: 'green' } );
-    // camera.far = 100000;
     camera.updateProjectionMatrix();
-
+    scene.background = new THREE.Color('skyblue');
 
     const renderer = new THREE.WebGLRenderer();
     renderer.antialias = true;
@@ -25,31 +19,20 @@ async function init() {
 
     document.getElementById("threejs_scene").appendChild(renderer.domElement);
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    // controls.update();
 
-    rendererStats.domElement.style.position = 'absolute';
-    rendererStats.domElement.style.left = '0px';
-    rendererStats.domElement.style.bottom = '0px';
-    document.body.appendChild(rendererStats.domElement);
     new function renderScene() {
         renderer.render(scene, camera);
-        rendererStats.update(renderer);
-        // TODO. 캐릭터 걸어다니도록
-        // boy.position.z -= clock.getDelta();
         requestAnimationFrame(renderScene);
     };
 
     const office = await makeOffice(scene, renderer, camera);
     scene.add(office);
 
-    // TODO. 타이머 (light)
-    // 불 끄러 가도록
-    // 모니터 워크로그 연동
-    window.addEventListener( 'resize', function () {
+    window.addEventListener('resize', function () {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize( window.innerWidth, window.innerHeight );
-    }, false );
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }, false);
 
     document.getElementById('selectDepartment').addEventListener('change', (e) => {
         const department = e.currentTarget.value;
@@ -64,7 +47,6 @@ async function init() {
 }
 
 const makeOffice = async (scene, renderer, camera) => {
-    // 5F
     const groupCount = 17;
     const userCountPerGroup = 8;
     const partitionCountPerGroup = userCountPerGroup / 2;
@@ -104,20 +86,21 @@ const makeOffice = async (scene, renderer, camera) => {
     console.timeEnd('createMonitors');
 
     console.time('createWalls');
-    await createWalls(floor, Math.floor(groupCount/2), initialX + .8, initialZ + 4.5);
+    await createWalls(floor, Math.floor(groupCount / 2), initialX + .8, initialZ + 4.5);
     console.timeEnd('createWalls');
 
     console.time('createHumans');
     await createHumans(renderer, floor, camera, fifthFloorHumanInfo.firstColumn, groupCount, userCountPerGroup, initialX + 1.5, initialZ + .5);
     console.timeEnd('createHumans');
+
     // 두번째 열
     // await createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 5.5, initialZ + 1.25);
     await createTables(floor, groupCount, secondRowUserCountPerGroup, initialX + 6.5, initialZ + 1);
     await createPartitions(floor, groupCount, secondRowPartitionCountPerGroup, initialX + 6.5, initialZ + 1.25);
     await createMonitors(floor, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 6.5, initialZ + 1);
     await createHumans(renderer, floor, camera, fifthFloorHumanInfo.secondColumn, groupCount, secondRowUserCountPerGroup, initialX + 6.5, initialZ + .5);
-    //
-    // // 세번째 열
+
+    // 세번째 열
     const thirdColumnGroupCount = 10;
     await createPillars(floor, fifthFloorHumanInfo.secondColumnPillarList, initialX + 10.5, initialZ + 1.25);
     await createTables(floor, thirdColumnGroupCount, secondRowUserCountPerGroup, initialX + 14.5, initialZ + 2.5);

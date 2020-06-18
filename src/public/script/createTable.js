@@ -61,6 +61,12 @@ const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initia
         const tableGeometry = await createBoxGeometry(1, 0.05, .5);
         const oneSideMaxCount = userCountPerGroup / 2;
         const tableGroup = new THREE.Group();
+        const tableMesh = await createTable(
+            tableGeometry,
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
+            0, .5, 0
+        );
+
         for (let i = 0; i < groupCount; i++) {
             const groupZ = i * 3 + initialZ;
             for (let j = 0; j < userCountPerGroup; j++) {
@@ -68,11 +74,8 @@ const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initia
                 const isLastItem = Math.floor(j / oneSideMaxCount) === 1;
                 let z = groupZ;
                 if (isLastItem) z += .6;
-                const table = await createTable(
-                    tableGeometry,
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
-                    x, .5, z
-                );
+                const table = tableMesh.clone();
+                table.position.set(x, .5, z);
 
                 tableGroup.add(table);
             }
