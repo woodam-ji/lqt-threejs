@@ -22,7 +22,7 @@ const createTable = (tableGeometry, image, x, y, z) => {
         table.position.x = x;
         table.position.y = y;
         table.position.z = z;
-
+        table.receiveShadow = true;
         resolve(addLegToTable(table));
     })
 };
@@ -70,7 +70,7 @@ const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initia
         for (let i = 0; i < groupCount; i++) {
             const groupZ = i * 3 + initialZ;
             for (let j = 0; j < userCountPerGroup; j++) {
-                const x = 1 * (j % oneSideMaxCount) + initialX;
+                const x = (j % oneSideMaxCount) + initialX;
                 const isLastItem = Math.floor(j / oneSideMaxCount) === 1;
                 let z = groupZ;
                 if (isLastItem) z += .6;
@@ -81,8 +81,27 @@ const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initia
             }
         }
         tableGroup.receiveShadow = true;
-        // table.castShadow = true;
         scene.add(tableGroup);
         resolve();
+    })
+};
+
+const createMeshTable = async () => {
+    const tableGeometry = new THREE.BoxGeometry(1, 0.05, .5);
+    const tableMesh = await createTable(
+        tableGeometry,
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
+        0, .5, 0
+    );
+    mesh.table = tableMesh;
+    return tableMesh;
+}
+
+const createTable2 = ({info, group}) => {
+    return new Promise(async resolve => {
+        if (!mesh.table) await createMeshTable();
+        const table = mesh.table.clone();
+        group.add(table);
+        resolve({info, group});
     })
 };

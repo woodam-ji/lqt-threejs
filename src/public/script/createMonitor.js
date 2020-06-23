@@ -3,7 +3,6 @@ const addMonitorBottom = () => {
         const monitorBottomGeometry = await createBoxGeometry(.3, .05, .2);
         const monitorMaterial = new THREE.MeshLambertMaterial({color: 0x555555});
         const monitorBottom = new THREE.Mesh(monitorBottomGeometry, monitorMaterial);
-        monitorBottom.castShadow = true;
 
         resolve(monitorBottom);
     })
@@ -14,9 +13,7 @@ const addMonitorMiddleToBottom = (monitorBottom) => {
         const monitorMiddleGeometry = await createBoxGeometry(.07, .3, .07);
         const monitorMaterial = new THREE.MeshLambertMaterial({color: 0x333333});
         const monitorMiddle = new THREE.Mesh(monitorMiddleGeometry, monitorMaterial);
-        monitorMiddle.castShadow = true;
         monitorBottom.add(monitorMiddle);
-        // monitorMiddle.position.x = 0;
         monitorMiddle.position.y = .1;
         monitorMiddle.position.z = .05;
 
@@ -29,10 +26,8 @@ const addTopToMiddle = ({monitorBottom, monitorMiddle}) => {
         const monitorTopGeometry = await createBoxGeometry(.6, .4, .05);
         const monitorMaterial = new THREE.MeshLambertMaterial({color: 0x333333});
         const monitorTop = new THREE.Mesh(monitorTopGeometry, monitorMaterial);
-        monitorTop.castShadow = true;
 
         monitorMiddle.add(monitorTop);
-        // monitorTop.position.x = 0;
         monitorTop.position.y = .3;
         monitorMiddle.position.z = -.05;
 
@@ -49,23 +44,20 @@ const addDisplayToTop = ({monitorBottom, monitorTop}) => {
 
         monitorTop.add(monitorDisplay);
         monitorDisplay.position.z = .013;
-        // monitorDisplay.position.y = 0;
 
         resolve(monitorBottom);
     })
 };
 
-const createMonitor = (x, y, z, name) => {
+const createMonitor = () => {
     return new Promise(async resolve => {
         let monitor = await addMonitorBottom();
         monitor = await addMonitorMiddleToBottom(monitor);
         monitor = await addTopToMiddle(monitor);
         monitor = await addDisplayToTop(monitor);
-        monitor.position.x = x;
-        monitor.position.y = y;
-        monitor.position.z = z;
-        await createNameTag(monitor, name);
-
+        monitor.position.set(0, .55, 0);
+        monitor.rotation.y = Math.PI;
+        mesh.monitor = monitor;
         resolve(monitor)
     })
 };
@@ -87,7 +79,7 @@ const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initia
                     z += .6;
                 }
 
-                if (!!humanInfo.name){
+                if (!!humanInfo.name) {
                     const monitor = await createMonitor(x, .55, z, humanInfo.name);
                     if (j < oneSideMaxCount) monitor.rotation.y = Math.PI;
                     monitorGroup.add(monitor);
@@ -102,11 +94,28 @@ const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initia
     })
 };
 
-const createNameTag = (scene, name = '') => {
+const createMonitor2 = ({group, info}) => {
+    return new Promise(async resolve => {
+        if (!!info.name) {
+            if (!mesh.monitor) await createMonitor();
+            if (!mesh.nameTag) await createNameTag(name);
+            const monitor = mesh.monitor.clone();
+
+            //TODO. nameTag
+            // const nameTag = mesh.nameTag.clone();
+            // monitor.add(nameTag);
+            group.add(monitor);
+        }
+
+        resolve({group, info});
+    });
+};
+
+const createNameTag = (name = '') => {
     return new Promise(resolve => {
         const loader = new THREE.SVGLoader();
 
-        loader.load('/public/assets/nameTag.svg', async (data) => {
+        const nameTag = loader.load('/public/assets/nameTag.svg', async (data) => {
             const paths = data.paths;
             const group = new THREE.Group();
 
@@ -136,9 +145,12 @@ const createNameTag = (scene, name = '') => {
             group.position.x = -.9;
             group.position.y = .1;
             group.position.z = -.03;
-            scene.add(group);
+            mesh.nameTag = group;
+            return group;
+            // scene.add(group);
         });
-        resolve();
+
+        resolve(nameTag);
     })
 };
 
