@@ -3,7 +3,7 @@ async function init() {
     const innerWidth = window.innerWidth;
     const innerHeight = window.innerHeight;
     const camera = new THREE.PerspectiveCamera(80, innerWidth / innerHeight, 0.1, 1000);
-    camera.position.set(7, 2, 1);
+    camera.position.set(-7, 2, 1);
     camera.lookAt(scene.position);
     camera.updateProjectionMatrix();
     scene.background = new THREE.Color('skyblue');
@@ -54,14 +54,15 @@ const mesh = {
     longHair: null,
     pants: null,
     skirt: null
-}
+};
 
 const makeOffice = async (scene) => {
     const {go, L, log, map, deepFlat, reduce, curry} = _;
     const forthFloor = await makeFourthFloorInfo();
-
-    await createCeiling(scene, 10, 10, 3, 3, 1.25);
-    const floor = await createFloor(10, 10);
+    const officeWidth = 22;
+    const officeHeight = 50;
+    await createCeiling(scene, officeWidth, officeHeight, 3, 3, 1.25);
+    const floor = await createFloor(officeWidth, officeHeight);
 
     const addSeat = ({info, group}) => {
         const {x, y, z} = info.position;
@@ -69,7 +70,7 @@ const makeOffice = async (scene) => {
         if (info.isReverse) group.rotation.y = Math.PI;
         floor.add(group);
         return floor
-    }
+    };
     const makeSeat = (info) => go(
         {info, group: new THREE.Group()},
         createTable2,
@@ -78,24 +79,27 @@ const makeOffice = async (scene) => {
         makeHuman2,
         addSeat
     );
-    const loop = (iter, f) => iter.map((value, index) => f(value, index));
-    const setPosition = (value, index) => {
-        const positionZ = value.isReverse ? 1.5 * value.index : 2 * value.index + .45;
-        const position = {x: 1 * index, y: 0, z: positionZ};
+    const loop = (iter, f) => iter.map(value => f(value));
+    const setPosition = (value) => {
+        const x = (value.x * - 1) + (officeWidth / 2);
+        let z = (value.z * .9) - (officeHeight / 2);
+        if (value.isReverse) z -= .35;
+        const position = {x, y: 0, z};
         return {...value, position}
-    }
-    console.time('floor');
+    };
 
+    console.time('floor');
     await go(
         forthFloor,
         L.map(info => loop(info, setPosition)),
         deepFlat,
+        L.filter(info => info.name !== undefined),
         map(makeSeat),
     );
-    console.timeEnd('floor')
+    console.timeEnd('floor');
 
     return floor;
-}
+};
 
 window.onload = (async function () {
     await init();

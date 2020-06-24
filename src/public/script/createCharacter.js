@@ -85,9 +85,11 @@ const createHumans = (renderer, scene, camera, humanInfos, groupCount, userCount
 
 const makeHuman2 = ({group, info}) => {
     return new Promise(async resolve => {
-        const human = await makeHuman(info);
+        if (!!info.name) {
+            const human = await makeHuman(info);
+            group.add(human);
+        }
 
-        group.add(human);
         resolve({group, info})
     })
 };
