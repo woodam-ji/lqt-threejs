@@ -275,6 +275,8 @@ const makeFourthFloorInfo = () => {
         ],
 
 
+
+        // L04
         [
             {z: 1, x: 6, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
             {z: 1, x: 7, name: '홍상희', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
@@ -287,17 +289,159 @@ const makeFourthFloorInfo = () => {
         ],
         [
             {z: 4, x: 6, name: '이승엽', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
-            {z: 4, x: 7, name: '박수영', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
-            {z: 4, x: 8, name: '황지현', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 4, x: 7, name: '박수영', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 4, x: 8, name: '황지현', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
         ],
         [
             {z: 5, x: 6, name: '이용희', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
-            {z: 5, x: 7, name: '신경수', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 5, x: 7, name: '신경수', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
             {z: 5, x: 8, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
         ],
-
-
-
+        [
+            {z: 7, x: 6, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 7, x: 7, name: '최민관', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 7, x: 8, name: '김우리', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+        ],
+        [
+            {z: 8, x: 6, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+            {z: 8, x: 7, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 8, x: 8, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+        ],
+        [
+            {z: 11, x: 6, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+            {z: 11, x: 7, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 11, x: 8, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+        ],
+        [
+            {z: 13, x: 6, name: '유연경', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+            {z: 13, x: 7, name: '이한빛', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 13, x: 8, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+        ],
+        [
+            {z: 14, x: 6, name: '장일지', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+            {z: 14, x: 7, name: '강혜경', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 14, x: 8, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+        ],
+        [
+            {z: 16, x: 6, name: '최주아', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+            {z: 16, x: 7, name: '이영화', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 16, x: 8, name: '오민지', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+        ],
+        [
+            {z: 17, x: 6, name: '심현아', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+            {z: 17, x: 7, name: '정다선', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 17, x: 8, name: '김하영', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+        ],
+        [
+            {z: 19, x: 6, name: '김혜진', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+            {z: 19, x: 7, name: '장지현', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 19, x: 8, name: '배정현', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+        ],
+        [
+            {z: 20, x: 6, name: '채연수', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+            {z: 20, x: 7, name: '심다현', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 20, x: 8, name: '윤혜림', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+        ],
+        [
+            {z: 22, x: 6, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+            {z: 22, x: 7, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 22, x: 8, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+        ],
+        [
+            {z: 23, x: 6, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+            {z: 23, x: 7, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 23, x: 8, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+        ],
+        [
+            {z: 25, x: 6, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+            {z: 25, x: 7, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 25, x: 8, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+        ],
+        [
+            {z: 26, x: 6, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+            {z: 26, x: 7, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: true},
+            {z: 26, x: 8, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: true},
+        ],
+        [
+            {z: 28, x: 6, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+            {z: 28, x: 7, name: '', gender: Genders.MALE, department: Departments.PCG, isReverse: false},
+            {z: 28, x: 8, name: '', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},
+        ],
+        [
+            {z: 29, x: 6, name: '', gender: Genders.MALE, department: Departments.SOS_AP, isReverse: true},
+            {z: 29, x: 7, name: '', gender: Genders.FEMALE, department: Departments.SOS_AP, isReverse: true},
+            {z: 29, x: 8, name: '', gender: Genders.MALE, department: Departments.SOS_AP, isReverse: true},
+        ],
+        [
+            {z: 31, x: 6, name: '신승환', gender: Genders.FEMALE, department: Departments.SOS_AP, isReverse: false},
+            {z: 31, x: 7, name: '이지현', gender: Genders.MALE, department: Departments.SOS_AP, isReverse: false},
+            {z: 31, x: 8, name: '', gender: Genders.FEMALE, department: Departments.SOS_AP, isReverse: false},
+        ],
+        [
+            {z: 32, x: 6, name: '최재원', gender: Genders.MALE, department: Departments.SOS_AP, isReverse: true},
+            {z: 32, x: 7, name: '백소담', gender: Genders.FEMALE, department: Departments.SOS_AP, isReverse: true},
+            {z: 32, x: 8, name: '', gender: Genders.MALE, department: Departments.SOS_AP, isReverse: true},
+        ],
+        [
+            {z: 34, x: 6, name: '김영웅', gender: Genders.FEMALE, department: Departments.SOS_AP, isReverse: false},
+            {z: 34, x: 7, name: '', gender: Genders.MALE, department: Departments.SOS_AP, isReverse: false},
+            {z: 34, x: 8, name: '', gender: Genders.FEMALE, department: Departments.SOS_AP, isReverse: false},
+        ],
+        [
+            {z: 35, x: 6, name: '한미경', gender: Genders.MALE, department: Departments.SOS_MS, isReverse: true},
+            {z: 35, x: 7, name: '', gender: Genders.FEMALE, department: Departments.SOS_MS, isReverse: true},
+            {z: 35, x: 8, name: '', gender: Genders.MALE, department: Departments.SOS_MS, isReverse: true},
+        ],
+        [
+            {z: 37, x: 6, name: '', gender: Genders.FEMALE, department: Departments.SOS_MS, isReverse: false},
+            {z: 37, x: 7, name: '', gender: Genders.MALE, department: Departments.SOS_MS, isReverse: false},
+            {z: 37, x: 8, name: '', gender: Genders.FEMALE, department: Departments.SOS_MS, isReverse: false},
+        ],
+        [
+            {z: 38, x: 6, name: '임석민', gender: Genders.MALE, department: Departments.SOS_MS, isReverse: true},
+            {z: 38, x: 7, name: '강진성', gender: Genders.FEMALE, department: Departments.SOS_MS, isReverse: true},
+            {z: 38, x: 8, name: '', gender: Genders.MALE, department: Departments.SOS_MS, isReverse: true},
+        ],
+        [
+            {z: 40, x: 6, name: '박현준', gender: Genders.FEMALE, department: Departments.SOS_MS, isReverse: false},
+            {z: 40, x: 7, name: '박성민', gender: Genders.MALE, department: Departments.SOS_MS, isReverse: false},
+            {z: 40, x: 8, name: '', gender: Genders.FEMALE, department: Departments.SOS_MS, isReverse: false},
+        ],
+        [
+            {z: 41, x: 6, name: '정재훈', gender: Genders.MALE, department: Departments.IDS, isReverse: true},
+            {z: 41, x: 7, name: '강진성', gender: Genders.FEMALE, department: Departments.IDS, isReverse: true},
+            {z: 41, x: 8, name: '', gender: Genders.MALE, department: Departments.IDS, isReverse: true},
+        ],
+        [
+            {z: 43, x: 6, name: '', gender: Genders.FEMALE, department: Departments.IDS, isReverse: false},
+            {z: 43, x: 7, name: '', gender: Genders.MALE, department: Departments.IDS, isReverse: false},
+            {z: 43, x: 8, name: '', gender: Genders.FEMALE, department: Departments.IDS, isReverse: false},
+        ],
+        [
+            {z: 44, x: 6, name: '이준한', gender: Genders.MALE, department: Departments.YAN, isReverse: true},
+            {z: 44, x: 7, name: '엄관식', gender: Genders.FEMALE, department: Departments.YAN, isReverse: true},
+            {z: 44, x: 8, name: '장동우', gender: Genders.MALE, department: Departments.YAN, isReverse: true},
+        ],
+        [
+            {z: 46, x: 6, name: '이단', gender: Genders.FEMALE, department: Departments.YAN, isReverse: false},
+            {z: 46, x: 7, name: '백승용', gender: Genders.MALE, department: Departments.YAN, isReverse: false},
+            {z: 46, x: 8, name: '고하영', gender: Genders.FEMALE, department: Departments.YAN, isReverse: false},
+        ],
+        [
+            {z: 47, x: 6, name: '', gender: Genders.MALE, department: Departments.PH, isReverse: true},
+            {z: 47, x: 7, name: '', gender: Genders.FEMALE, department: Departments.PH, isReverse: true},
+            {z: 47, x: 8, name: '', gender: Genders.MALE, department: Departments.PH, isReverse: true},
+        ],
+        [
+            {z: 46, x: 6, name: '김자영', gender: Genders.FEMALE, department: Departments.PH, isReverse: false},
+            {z: 46, x: 7, name: '이병준', gender: Genders.MALE, department: Departments.PH, isReverse: false},
+            {z: 46, x: 8, name: '노근영', gender: Genders.FEMALE, department: Departments.PH, isReverse: false},
+        ],
+        [
+            {z: 47, x: 6, name: '', gender: Genders.MALE, department: Departments.PH, isReverse: true},
+            {z: 47, x: 7, name: '', gender: Genders.FEMALE, department: Departments.PH, isReverse: true},
+            {z: 47, x: 8, name: '', gender: Genders.MALE, department: Departments.PH, isReverse: true},
+        ],
 
 
         // R10
