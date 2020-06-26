@@ -49,7 +49,7 @@ const addDisplayToTop = ({monitorBottom, monitorTop}) => {
     })
 };
 
-const createMonitor = () => {
+const makeMonitorMesh = () => {
     return new Promise(async resolve => {
         let monitor = await addMonitorBottom();
         monitor = await addMonitorMiddleToBottom(monitor);
@@ -62,48 +62,17 @@ const createMonitor = () => {
     })
 };
 
-const createMonitors = (scene, humanInfos, groupCount, userCountPerGroup, initialX, initialZ) => {
-    return new Promise(async resolve => {
-        const oneSideMaxCount = userCountPerGroup / 2;
-        const monitorGroup = new THREE.Group();
-        let humanCount = 0;
-        for (let i = 0; i < groupCount; i++) {
-            let groupZ = i * 3 + initialZ;
-
-            for (let j = 0; j < userCountPerGroup; j++) {
-                const humanInfo = humanInfos[humanCount] ? humanInfos[humanCount] : {};
-                const x = (j % oneSideMaxCount) + initialX;
-                let z = groupZ;
-
-                if (Math.floor(j / oneSideMaxCount) === 1) {
-                    z += .6;
-                }
-
-                if (!!humanInfo.name) {
-                    const monitor = await createMonitor(x, .55, z, humanInfo.name);
-                    if (j < oneSideMaxCount) monitor.rotation.y = Math.PI;
-                    monitorGroup.add(monitor);
-                }
-                humanCount++;
-            }
-        }
-        // monitorGroup.castShadow = true;
-        // monitorGroup.receiveShadow = true;
-        scene.add(monitorGroup);
-        resolve();
-    })
-};
-
-const createMonitor2 = ({group, info}) => {
+const createMonitor = ({group, info}) => {
     return new Promise(async resolve => {
         if (!!info.name) {
-            if (!mesh.monitor) await createMonitor();
-            if (!mesh.nameTag) await createNameTag(name);
+            if (!mesh.monitor) await makeMonitorMesh();
+            if (!mesh.nameTag) await createNameTag();
+            if (!loaders.font) loaders.font = await loadFont('/public/assets/font.typeface.json');
             const monitor = mesh.monitor.clone();
-
-            //TODO. nameTag
-            // const nameTag = mesh.nameTag.clone();
-            // monitor.add(nameTag);
+            const nameTag = mesh.nameTag.clone();
+            const name = await createName(info.name);
+            nameTag.add(name);
+            monitor.add(nameTag);
             group.add(monitor);
         }
 
@@ -111,74 +80,75 @@ const createMonitor2 = ({group, info}) => {
     });
 };
 
-const createNameTag = (name = '') => {
+function loadSVG(url) {
     return new Promise(resolve => {
-        const loader = new THREE.SVGLoader();
+        new THREE.SVGLoader().load(url, resolve);
+    });
+}
 
-        const nameTag = loader.load('/public/assets/nameTag.svg', async (data) => {
-            const paths = data.paths;
-            const group = new THREE.Group();
+function loadFont(url) {
+    return new Promise(resolve => {
+        new THREE.FontLoader().load(url, resolve);
+    });
+}
 
-            for (let i = 0; i < paths.length; i++) {
-                const path = paths[i];
-                const material = new THREE.MeshLambertMaterial({
-                    color: '#ff3478',
-                    side: THREE.DoubleSide,
-                    // depthWrite: false, // 투명하게 해주는 옵션
+const createNameTag = () => {
+    return new Promise(async resolve => {
+        const nameTag = await loadSVG('/public/assets/nameTag.svg');
+        const paths = nameTag.paths;
+        const group = new THREE.Group();
+
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            const material = new THREE.MeshLambertMaterial({
+                color: '#ff3478',
+                side: THREE.DoubleSide,
+                // depthWrite: false, // 투명하게 해주는 옵션
+            });
+            const shapes = path.toShapes(true);
+
+            for (let j = 0; j < shapes.length; j++) {
+                const shape = shapes[j];
+                // const geometry = new THREE.ShapeBufferGeometry( shape );
+                const geometry = new THREE.ExtrudeGeometry(shape, {
+                    depth: .4,
+                    bevelEnabled: false
                 });
-                const shapes = path.toShapes(true);
-
-                for (let j = 0; j < shapes.length; j++) {
-                    const shape = shapes[j];
-                    // const geometry = new THREE.ShapeBufferGeometry( shape );
-                    const geometry = new THREE.ExtrudeGeometry(shape, {
-                        depth: .4,
-                        bevelEnabled: false
-                    });
-                    const mesh = new THREE.Mesh(geometry, material);
-                    group.add(mesh);
-                }
+                const mesh = new THREE.Mesh(geometry, material);
+                group.add(mesh);
             }
+        }
 
-            await createName(group, name);
-            group.scale.set(.002, .002, .002);
-            group.position.x = -.9;
-            group.position.y = .1;
-            group.position.z = -.03;
-            mesh.nameTag = group;
-            return group;
-            // scene.add(group);
-        });
-
+        group.scale.set(.002, .002, .002);
+        group.position.x = -.9;
+        group.position.y = .1;
+        group.position.z = .001;
+        mesh.nameTag = group;
         resolve(nameTag);
     })
 };
 
-const createName = (scene, text) => {
-    return new Promise(resolve => {
-        const loader = new THREE.FontLoader();
-
-        loader.load('/public/assets/font.typeface.json', function (font) {
-            const geometry = new THREE.TextGeometry(text, {
-                font: font,
+const nameMaterial = new THREE.MeshLambertMaterial({
+    color: '#fff'
+});
+const createName = (text = '') => {
+    return new Promise(async resolve => {
+        const nameGeometry = new THREE.TextBufferGeometry(
+            text,
+            {
+                font: loaders.font,
+                bevelEnabled: false,
+                curveSegments: 8,
+                bevelThickness: 1,
+                bevelSize: 0,
                 size: 26,
-                height: 1,
-                // curveSegments: 12,
-                // bevelEnabled: true,
-                // bevelThickness: 10,
-                // bevelSize: 8,
-                // bevelOffset: 0,
-                // bevelSegments: 5
-            });
-            const material = new THREE.MeshLambertMaterial({
-                color: '#fff'
-            });
-            const name = new THREE.Mesh(geometry, material);
-            name.position.x = text.length > 2 ? 273 : 290;
-            name.position.y = 282;
-            name.position.z = 4;
-            scene.add(name)
-        });
-        resolve();
+                height: 1
+            }
+        );
+        const name = new THREE.Mesh(nameGeometry, nameMaterial);
+        name.position.x = text.length > 2 ? 273 : 292;
+        name.position.y = 282;
+        name.position.z = 1;
+        resolve(name);
     });
 };

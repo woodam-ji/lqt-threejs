@@ -16,7 +16,7 @@ const createBoxGeometry = (width, height, depth, ...args) => {
     })
 };
 
-const createTable = (tableGeometry, image, x, y, z) => {
+const makeTableMesh = (tableGeometry, image, x, y, z) => {
     return new Promise(async resolve => {
         const table = await createTextureMesh(tableGeometry, image);
         table.position.x = x;
@@ -56,39 +56,9 @@ const addLegToTable = (tableMesh) => {
     })
 };
 
-const createTables = (scene, groupCount, userCountPerGroup, initialX = 0, initialZ = 0) => {
-    return new Promise(async resolve => {
-        const tableGeometry = await createBoxGeometry(1, 0.05, .5);
-        const oneSideMaxCount = userCountPerGroup / 2;
-        const tableGroup = new THREE.Group();
-        const tableMesh = await createTable(
-            tableGeometry,
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
-            0, .5, 0
-        );
-
-        for (let i = 0; i < groupCount; i++) {
-            const groupZ = i * 3 + initialZ;
-            for (let j = 0; j < userCountPerGroup; j++) {
-                const x = (j % oneSideMaxCount) + initialX;
-                const isLastItem = Math.floor(j / oneSideMaxCount) === 1;
-                let z = groupZ;
-                if (isLastItem) z += .6;
-                const table = tableMesh.clone();
-                table.position.set(x, .5, z);
-
-                tableGroup.add(table);
-            }
-        }
-        tableGroup.receiveShadow = true;
-        scene.add(tableGroup);
-        resolve();
-    })
-};
-
 const createMeshTable = async () => {
     const tableGeometry = new THREE.BoxGeometry(1, 0.05, .5);
-    const tableMesh = await createTable(
+    const tableMesh = await makeTableMesh(
         tableGeometry,
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVh0h0YesiweR4FTsNvg0BJwnCWoxxEK-yiy6VWnOb7Jxo_hM9vA&s",
         0, .5, 0
@@ -97,7 +67,7 @@ const createMeshTable = async () => {
     return tableMesh;
 }
 
-const createTable2 = ({info, group}) => {
+const createTable = ({info, group}) => {
     return new Promise(async resolve => {
         if (!mesh.table) await createMeshTable();
         const table = mesh.table.clone();

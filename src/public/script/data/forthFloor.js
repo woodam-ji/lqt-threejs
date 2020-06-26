@@ -67,7 +67,6 @@ const Genders = {
 // }
 
 const makeFourthFloorInfo = () => {
-    const column1 = []
     return [
         [
             {z: 1, x: 1, name: '김예슬B', gender: Genders.FEMALE, department: Departments.PCG, isReverse: false},

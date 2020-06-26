@@ -1,42 +1,15 @@
-const createPartitions = (scene, groupCount, partitionCountPerGroup, initialX, initialZ) => {
-    return new Promise(async resolve => {
-        const partitionGroup = new THREE.Group();
-        const partitionMesh = await createPartition(0, .5, 0);
-        for (let i = 0; i < groupCount; i++) {
-            let groupZ = i * 3 + initialZ;
-            for (let j = 0; j < partitionCountPerGroup; j++) {
-                const x = (j % groupCount) + initialX;
-                let z = groupZ;
-
-                if (Math.floor(j / partitionCountPerGroup) === 1) {
-                    z += .6;
-                }
-
-                const partition = partitionMesh.clone();
-                partition.position.set(x, .5, z);
-                partitionGroup.add(partition);
-            }
-        }
-
-        scene.add(partitionGroup);
-        resolve();
-    })
-};
-
-const createPartition2 = ({info, group}) => {
+const createPartition = ({info, group}) => {
     return new Promise(async resolve => {
         if (info.isReverse) {
-            if (!mesh.partition) await createPartition();
+            if (!mesh.partition) await makePartitionMesh();
             const partition = mesh.partition.clone();
-
             group.add(partition);
         }
-
         resolve({info, group});
     })
 };
 
-const createPartition = () => {
+const makePartitionMesh = () => {
     return new Promise(async resolve => {
         let partition = await addPartitionBottom();
         partition = await addDividerToBottom(partition);

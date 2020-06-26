@@ -1,92 +1,10 @@
 const hairColors = ['#495942', '#71917b', '#3e1111', '#773e29', '#354693', '#000000', '#b69043', '#81DAF5', '#F5A9F2', '#B45F04'];
 const pantsColors = ['#2E2E2E', '#FBBC03', '#3B0B2E', '#0101DF', '#04B4AE', '#AEB404', '#088A29', '#8A084B', '#3B170B', '#0B243B'];
 
-const makeNeck = () => {
-    const neckGeometry = new THREE.CylinderGeometry(.05, .05, .05, 16);
-    const neckMaterial = new THREE.MeshLambertMaterial({color: "#FFE4C4"});
-    mesh.neck = new THREE.Mesh(neckGeometry, neckMaterial);
-}
-const makeBody = () => {
-    const bodyGeometry = new THREE.CylinderGeometry(.15, .15, .25, 16);
-    const bodyMaterial = new THREE.MeshLambertMaterial({color: "#5882FA"});
-    mesh.body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-}
-const makeArm = () => {
-    const armGeometry = new THREE.CylinderGeometry(0.035, 0.035, .25, 16);
-    const armMaterial = new THREE.MeshLambertMaterial({color: "#FFE4C4"});
-    mesh.arm = new THREE.Mesh(armGeometry, armMaterial);
-}
-const makeArmShirt = () => {
-    const armShirtGeometry = new THREE.CylinderGeometry(.05, .05, .15, 16);
-    const armShirtMaterial = new THREE.MeshLambertMaterial({color: "#FFFFFF"});
-    mesh.armShirt = new THREE.Mesh(armShirtGeometry, armShirtMaterial);
-}
-const makeHand = () => {
-    const handGeometry = new THREE.SphereGeometry(.05, 16, 16);
-    const handMaterial = new THREE.MeshLambertMaterial({color: "#FFE4C4"});
-    mesh.hand = new THREE.Mesh(handGeometry, handMaterial);
-}
-const makeLeg = () => {
-    const legGeometry = new THREE.CylinderGeometry(.035, .035, .5, 16);
-    const legMaterial = new THREE.MeshLambertMaterial({color: '#FFE4C4'});
-    mesh.leg = new THREE.Mesh(legGeometry, legMaterial);
-}
-const makeFoot = () => {
-    const footGeometry = new THREE.BoxGeometry(.125, .05, .175);
-    const footMaterial = new THREE.MeshLambertMaterial({color: '#000000'});
-    mesh.foot = new THREE.Mesh(footGeometry, footMaterial);
-}
-const makePantsMesh = () => {
-    const pantsGeometry = new THREE.CylinderGeometry(.06, .06, .25, 16);
-    const pantsMaterial = new THREE.MeshLambertMaterial({color: '#fbbc03'});
-    mesh.pants = new THREE.Mesh(pantsGeometry, pantsMaterial);
-}
-const makeSkirtMesh = () => {
-    const skirtGeometry = new THREE.CylinderGeometry(.15, .18, .125, 16);
-    const skirtMaterial = new THREE.MeshLambertMaterial({color: "#FBEFFB"});
-    mesh.skirt = new THREE.Mesh(skirtGeometry, skirtMaterial);
-}
-
-const createHumans = (renderer, scene, camera, humanInfos, groupCount, userCountPerGroup, initialX, initialZ) => {
-    return new Promise(async resolve => {
-        const oneSideMaxCount = userCountPerGroup / 2;
-        const humanGroup = new THREE.Group();
-        let humanCount = 0;
-        for (let i = 0; i < groupCount; i++) {
-            let groupZ = i * 3 + initialZ;
-
-            for (let j = 0; j < userCountPerGroup; j++) {
-                const humanInfo = humanInfos[humanCount] ? humanInfos[humanCount] : {};
-                const x = (j % oneSideMaxCount) + initialX;
-                let z = groupZ;
-                let rotateY = 0;
-
-                if (Math.floor(j / oneSideMaxCount) === 1) {
-                    z += 1.6;
-                }
-                if (j >= oneSideMaxCount) {
-                    rotateY = Math.PI;
-                }
-
-                if (!!humanInfo.name) {
-                    const human = await makeHuman(hairColors[parseInt(Math.random() * pantsColors.length)], humanInfo.isWoman, departmentColor[humanInfo.department], pantsColors[parseInt(Math.random() * pantsColors.length)], renderer, scene, camera, true);
-                    human.position.x = x;
-                    human.position.z = z;
-                    human.rotation.y = rotateY;
-                    humanGroup.add(human);
-                }
-                humanCount++;
-            }
-        }
-        scene.add(humanGroup);
-        resolve()
-    })
-};
-
-const makeHuman2 = ({group, info}) => {
+const createHuman = ({group, info}) => {
     return new Promise(async resolve => {
         if (!!info.name) {
-            const human = await makeHuman(info);
+            const human = await makeHumanMesh(info);
             group.add(human);
         }
 
@@ -94,7 +12,7 @@ const makeHuman2 = ({group, info}) => {
     })
 };
 
-const makeHuman = (info) => {
+const makeHumanMesh = (info) => {
     return new Promise(async resolve => {
         if (!mesh.head) await makeHead();
         if (!mesh.hair) await makeHair();
@@ -110,19 +28,26 @@ const makeHuman = (info) => {
         if (!mesh.pants) await makePantsMesh();
         if (!mesh.skirt) await makeSkirtMesh();
         const isFemale = info.gender === Genders.FEMALE;
-        const hairColor = hairColors[parseInt(Math.random() * hairColors.length)];
+        const random = Math.random();
+        const hairColor = hairColors[random * hairColors.length];
         const shirtColor = DepartmentColors[info.department];
-        const pantsColor = pantsColors[parseInt(Math.random() * pantsColors.length)];
+        const pantsColor = pantsColors[random * pantsColors.length];
         const head = mesh.head.clone();
         const hair = mesh.hair.clone();
-
         hair.material = mesh.hair.material.clone();
         hair.material.color.set(hairColor);
         head.add(hair);
 
         if (isFemale) {
             const longHair = mesh.longHair.clone();
-            longHair.material = mesh.longHair.children.forEach(child => child.material.color.set(hairColor));
+            // intersects[0].object.children[j].material.color.setHex(0x1A75FF);
+            // longHair.material = mesh.longHair.children.map(child => {
+            //     const cloneChild = child.clone();
+            //     cloneChild.material = child.material.clone();
+            //     cloneChild.material.color.set(hairColor);
+            //     return cloneChild;
+            // });
+            longHair.material = mesh.longHair.children.map(child => child.material.color.set(hairColor));
             head.add(longHair);
         }
 
@@ -171,7 +96,6 @@ const makeHuman = (info) => {
 
         body.add(rightArm);
         body.add(leftArm);
-
 
         const leftLeg = mesh.leg.clone();
         const rightLeg = mesh.leg.clone();
@@ -259,3 +183,49 @@ const makeSkirt = (body, pantsColor) => {
         resolve();
     })
 };
+
+const makeNeck = () => {
+    const neckGeometry = new THREE.CylinderGeometry(.05, .05, .05, 16);
+    const neckMaterial = new THREE.MeshLambertMaterial({color: "#FFE4C4"});
+    mesh.neck = new THREE.Mesh(neckGeometry, neckMaterial);
+}
+const makeBody = () => {
+    const bodyGeometry = new THREE.CylinderGeometry(.15, .15, .25, 16);
+    const bodyMaterial = new THREE.MeshLambertMaterial({color: "#5882FA"});
+    mesh.body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+}
+const makeArm = () => {
+    const armGeometry = new THREE.CylinderGeometry(0.035, 0.035, .25, 16);
+    const armMaterial = new THREE.MeshLambertMaterial({color: "#FFE4C4"});
+    mesh.arm = new THREE.Mesh(armGeometry, armMaterial);
+}
+const makeArmShirt = () => {
+    const armShirtGeometry = new THREE.CylinderGeometry(.05, .05, .15, 16);
+    const armShirtMaterial = new THREE.MeshLambertMaterial({color: "#FFFFFF"});
+    mesh.armShirt = new THREE.Mesh(armShirtGeometry, armShirtMaterial);
+}
+const makeHand = () => {
+    const handGeometry = new THREE.SphereGeometry(.05, 16, 16);
+    const handMaterial = new THREE.MeshLambertMaterial({color: "#FFE4C4"});
+    mesh.hand = new THREE.Mesh(handGeometry, handMaterial);
+}
+const makeLeg = () => {
+    const legGeometry = new THREE.CylinderGeometry(.035, .035, .5, 16);
+    const legMaterial = new THREE.MeshLambertMaterial({color: '#FFE4C4'});
+    mesh.leg = new THREE.Mesh(legGeometry, legMaterial);
+}
+const makeFoot = () => {
+    const footGeometry = new THREE.BoxGeometry(.125, .05, .175);
+    const footMaterial = new THREE.MeshLambertMaterial({color: '#000000'});
+    mesh.foot = new THREE.Mesh(footGeometry, footMaterial);
+}
+const makePantsMesh = () => {
+    const pantsGeometry = new THREE.CylinderGeometry(.06, .06, .25, 16);
+    const pantsMaterial = new THREE.MeshLambertMaterial({color: '#fbbc03'});
+    mesh.pants = new THREE.Mesh(pantsGeometry, pantsMaterial);
+}
+const makeSkirtMesh = () => {
+    const skirtGeometry = new THREE.CylinderGeometry(.15, .18, .125, 16);
+    const skirtMaterial = new THREE.MeshLambertMaterial({color: "#FBEFFB"});
+    mesh.skirt = new THREE.Mesh(skirtGeometry, skirtMaterial);
+}

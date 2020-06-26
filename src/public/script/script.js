@@ -36,11 +36,15 @@ async function init() {
     }, false);
 }
 
+const loaders = {
+  font: null
+};
 const mesh = {
     table: null,
     partition: null,
     monitor: null,
     nameTag: null,
+    font: null,
     head: null,
     hair: null,
     eye: null,
@@ -68,30 +72,28 @@ const makeOffice = async (scene) => {
         const {x, y, z} = info.position;
         group.position.set(x, y, z);
         if (info.isReverse) group.rotation.y = Math.PI;
-        floor.add(group);
-        return floor
+        return floor.add(group);
     };
     const makeSeat = (info) => go(
         {info, group: new THREE.Group()},
-        createTable2,
-        createPartition2,
-        createMonitor2,
-        makeHuman2,
+        setPosition,
+        createTable,
+        createPartition,
+        createMonitor,
+        createHuman,
         addSeat
     );
-    const loop = (iter, f) => iter.map(value => f(value));
-    const setPosition = (value) => {
-        const x = (value.x * - 1) + (officeWidth / 2);
-        let z = (value.z * .9) - (officeHeight / 2);
-        if (value.isReverse) z -= .35;
+    const setPosition = ({info, group}) => {
+        const x = (info.x * - 1) + (officeWidth / 2);
+        let z = (info.z * .9) - (officeHeight / 2);
+        if (info.isReverse) z -= .35;
         const position = {x, y: 0, z};
-        return {...value, position}
+        return {info: {...info, position}, group};
     };
 
     console.time('floor');
     await go(
         forthFloor,
-        L.map(info => loop(info, setPosition)),
         deepFlat,
         L.filter(info => info.name !== undefined),
         map(makeSeat),
