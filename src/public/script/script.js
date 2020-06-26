@@ -37,7 +37,7 @@ async function init() {
 }
 
 const loaders = {
-  font: null
+    font: null
 };
 const mesh = {
     table: null,
@@ -62,7 +62,7 @@ const mesh = {
 
 const makeOffice = async (scene) => {
     const {go, L, log, map, deepFlat, reduce, curry} = _;
-    const forthFloor = await makeFourthFloorInfo();
+    const forthFloor = await fourthFloorMembers();
     const officeWidth = 22;
     const officeHeight = 50;
     await createCeiling(scene, officeWidth, officeHeight, 3, 3, 1.25);
@@ -84,7 +84,7 @@ const makeOffice = async (scene) => {
         addSeat
     );
     const setPosition = ({info, group}) => {
-        const x = (info.x * - 1) + (officeWidth / 2);
+        const x = (info.x * -1) + (officeWidth / 2);
         let z = (info.z * .9) - (officeHeight / 2);
         if (info.isReverse) z -= .35;
         const position = {x, y: 0, z};
@@ -94,7 +94,7 @@ const makeOffice = async (scene) => {
     console.time('floor');
     await go(
         forthFloor,
-        L.filter(info => info.name !== undefined),
+        L.filter(_ => _.name !== undefined),
         map(makeSeat),
     );
     console.timeEnd('floor');

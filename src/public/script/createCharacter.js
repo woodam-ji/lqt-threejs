@@ -29,9 +29,9 @@ const makeHumanMesh = (info) => {
         if (!mesh.skirt) await makeSkirtMesh();
         const isFemale = info.gender === Genders.FEMALE;
         const random = Math.random();
-        const hairColor = hairColors[random * hairColors.length];
+        const hairColor = hairColors[Math.floor(random * hairColors.length)];
+        const pantsColor = pantsColors[Math.floor(random * pantsColors.length)];
         const shirtColor = DepartmentColors[info.department];
-        const pantsColor = pantsColors[random * pantsColors.length];
         const head = mesh.head.clone();
         const hair = mesh.hair.clone();
         hair.material = mesh.hair.material.clone();
@@ -40,14 +40,19 @@ const makeHumanMesh = (info) => {
 
         if (isFemale) {
             const longHair = mesh.longHair.clone();
-            // intersects[0].object.children[j].material.color.setHex(0x1A75FF);
             // longHair.material = mesh.longHair.children.map(child => {
             //     const cloneChild = child.clone();
             //     cloneChild.material = child.material.clone();
             //     cloneChild.material.color.set(hairColor);
             //     return cloneChild;
             // });
-            longHair.material = mesh.longHair.children.map(child => child.material.color.set(hairColor));
+            longHair.children = longHair.children.map(child => {
+                const cloneChild = child.clone();
+                cloneChild.material = child.material.clone();
+                cloneChild.material.color.set(hairColor);
+                return cloneChild;
+            });
+            console.log(longHair)
             head.add(longHair);
         }
 
