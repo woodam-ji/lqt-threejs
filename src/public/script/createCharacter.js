@@ -40,19 +40,10 @@ const makeHumanMesh = (info) => {
 
         if (isFemale) {
             const longHair = mesh.longHair.clone();
-            // longHair.material = mesh.longHair.children.map(child => {
-            //     const cloneChild = child.clone();
-            //     cloneChild.material = child.material.clone();
-            //     cloneChild.material.color.set(hairColor);
-            //     return cloneChild;
-            // });
-            longHair.children = longHair.children.map(child => {
-                const cloneChild = child.clone();
-                cloneChild.material = child.material.clone();
-                cloneChild.material.color.set(hairColor);
-                return cloneChild;
-            });
-            console.log(longHair)
+            for (let i=0; i<longHair.children.length; i++){
+                longHair.children[i].material = mesh.longHair.children[i].material.clone();
+                longHair.children[i].material.color.set(hairColor);
+            }
             head.add(longHair);
         }
 
