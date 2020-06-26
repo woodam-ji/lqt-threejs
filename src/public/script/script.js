@@ -94,7 +94,6 @@ const makeOffice = async (scene) => {
     console.time('floor');
     await go(
         forthFloor,
-        deepFlat,
         L.filter(info => info.name !== undefined),
         map(makeSeat),
     );
