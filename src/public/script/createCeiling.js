@@ -9,15 +9,17 @@ const createFloor = (officeWidth, officeHeight) => {
     })
 };
 
-const createCeiling = (scene, officeWidth, officeHeight, groupCount, initialX, initialZ) => {
+const createCeiling = (officeWidth, officeHeight) => {
     return new Promise(resolve => {
         const ceilingGeometry = new THREE.BoxGeometry(officeWidth, .2, officeHeight);
         const ceilingMaterial = new THREE.MeshBasicMaterial({color: 0xc5c5c5});
         const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
         ceiling.position.y = 2.6;
-        scene.add(ceiling);
-        createCeilingLights(ceiling, groupCount, initialX, initialZ);
-        resolve();
+        // const pointLight = new THREE.PointLight(0xFFFFFF, 1, officeWidth);
+        // ceiling.add(pointLight);
+        const light = new THREE.AmbientLight( 0xFFFFFF, .8 ); // soft white light
+        ceiling.add( light )
+        resolve(ceiling);
     });
 
 };
@@ -57,16 +59,24 @@ const createCeilingLights = (ceiling, groupCount, initialX, initialZ) => {
     });
 };
 
-const createCeilingLight = () => {
+const createCeilingLight = ({lightsInfo, lightGroup}) => {
     return new Promise(resolve => {
-        const ceilingLightGeometry = new THREE.BoxGeometry(1.5, .1, .3);
+        if (!mesh.light) makeLightMesh();
+        const light = mesh.light.clone();
+        lightGroup.add(light);
+        resolve({lightsInfo, lightGroup})
+    })
+};
+
+const makeLightMesh = () => {
+    return new Promise(resolve => {console.log(1)
+        const ceilingLightGeometry = new THREE.BoxGeometry(1.2, .1, .3);
         const ceilingLightMaterial = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
         const ceilingLight = new THREE.Mesh(ceilingLightGeometry, ceilingLightMaterial);
+        // const pointLight = new THREE.PointLight(0xFFFFFF, 1, 3);
+        // ceilingLight.add(pointLight);
 
-        const pointLight = new THREE.PointLight(0xFFFFFF, 1, 3);
-        pointLight.position.set(.5, -1, -.3);
-        ceilingLight.add(pointLight);
-
+        mesh.light = ceilingLight;
         resolve(ceilingLight)
     })
 };

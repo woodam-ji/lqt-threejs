@@ -14,31 +14,40 @@ async function init() {
     renderer.setSize(innerWidth, innerHeight);
     renderer.shadowMap.enabled = true;
 
-    const ambientLight = new THREE.AmbientLight(0xFFFFFF, .1);
-    scene.add(ambientLight);
+    // const ambientLight = new THREE.AmbientLight(0xFFFFFF, .1);
+    // scene.add(ambientLight);
 
     document.getElementById("threejs_scene").appendChild(renderer.domElement);
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.update();
 
     new function renderScene() {
+        // animation();
         renderer.render(scene, camera);
         requestAnimationFrame(renderScene);
     };
 
-    const office = await makeOffice(scene);
+    const office = await makeOffice();
     scene.add(office);
 
+
+    const animation = () => {
+        console.log(office);
+    }
+
     window.addEventListener('resize', function () {
-        camera.aspect = window.innerWidth / window.innerHeight;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        camera.aspect = width / height;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(width, height);
     }, false);
 }
 
 const loaders = {
     font: null
 };
+
 const mesh = {
     table: null,
     partition: null,
@@ -57,22 +66,46 @@ const mesh = {
     foot: null,
     longHair: null,
     pants: null,
-    skirt: null
+    skirt: null,
+    light: null
 };
 
-const makeOffice = async (scene) => {
-    const {go, L, log, map, deepFlat, reduce, curry} = _;
-    const forthFloor = await fourthFloorMembers();
+const makeOffice = async () => {
+    const {go, L, map, log, deepFlat, reduce, curry} = _;
+    const fourthFloor = await fourthFloorMembers();
+    const fourthFloorLights = fourthFloorLightsData();
     const officeWidth = 22;
     const officeHeight = 50;
-    await createCeiling(scene, officeWidth, officeHeight, 3, 3, 1.25);
+    await createCeiling(officeWidth, officeHeight);
     const floor = await createFloor(officeWidth, officeHeight);
+    const ceiling = await createCeiling(officeWidth, officeHeight);
+
+    const addLight = ({lightsInfo, lightGroup}) => {
+        const x = (lightsInfo.x * -1) + (officeWidth / 2);
+        let z = (lightsInfo.z * .9) - (officeHeight / 2);
+        lightGroup.position.set(x, -.1, z);
+        ceiling.add(lightGroup);
+        return {lightsInfo, lightGroup};
+    }
+    const makeCeilingLight = lightsInfo => go(
+        {lightsInfo, lightGroup: new THREE.Group()},
+        createCeilingLight,
+        addLight
+    );
+    go(
+        fourthFloorLights,
+        map(makeCeilingLight),
+        reduce()
+    )
+    // ceiling.add(lightGroup);
+    floor.add(ceiling);
 
     const addSeat = ({info, group}) => {
         const {x, y, z} = info.position;
         group.position.set(x, y, z);
         if (info.isReverse) group.rotation.y = Math.PI;
-        return floor.add(group);
+        floor.add(group)
+        return {info, group};
     };
     const makeSeat = (info) => go(
         {info, group: new THREE.Group()},
@@ -83,6 +116,7 @@ const makeOffice = async (scene) => {
         createHuman,
         addSeat
     );
+
     const setPosition = ({info, group}) => {
         const x = (info.x * -1) + (officeWidth / 2);
         let z = (info.z * .9) - (officeHeight / 2);
@@ -93,7 +127,7 @@ const makeOffice = async (scene) => {
 
     console.time('floor');
     await go(
-        forthFloor,
+        fourthFloor,
         L.filter(_ => _.name !== undefined),
         map(makeSeat),
     );

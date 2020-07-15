@@ -117,6 +117,12 @@ const makeHumanMesh = (info) => {
 
         head.add(body);
         head.position.set(0, .88, -.5);
+
+        if (info.name === '이인희') {
+            console.log(123);
+
+        }
+
         resolve(head);
     })
 };
