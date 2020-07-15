@@ -33,7 +33,7 @@ async function init() {
 
     const animation = () => {
         console.log(office);
-    }
+    };
 
     window.addEventListener('resize', function () {
         const width = window.innerWidth;
@@ -76,27 +76,45 @@ const makeOffice = async () => {
     const fourthFloorLights = fourthFloorLightsData();
     const officeWidth = 22;
     const officeHeight = 50;
-    await createCeiling(officeWidth, officeHeight);
     const floor = await createFloor(officeWidth, officeHeight);
     const ceiling = await createCeiling(officeWidth, officeHeight);
 
-    const addLight = ({lightsInfo, lightGroup}) => {
+    const setLightPoint = ({lightsInfo, lightGroup}) => {
         const x = (lightsInfo.x * -1) + (officeWidth / 2);
         let z = (lightsInfo.z * .9) - (officeHeight / 2);
         lightGroup.position.set(x, -.1, z);
-        ceiling.add(lightGroup);
         return {lightsInfo, lightGroup};
-    }
+    };
+
+    const lights = new THREE.Group();
+    const light = new THREE.AmbientLight(0xFFFFFF, .8); // soft white light
+    const addLight = info => {
+        lights.add(info.lightGroup);
+        return info;
+    };
     const makeCeilingLight = lightsInfo => go(
         {lightsInfo, lightGroup: new THREE.Group()},
         createCeilingLight,
+        setLightPoint,
         addLight
     );
+    ceiling.add(light);
+    ceiling.add(lights);
+
+    document.getElementById('toggleLight').addEventListener('click', () => {
+        if (mesh.light) {
+            const isOn = mesh.light.material.color.getHex().toString(16) === '0';
+            mesh.light.material.color.set(isOn ? '#ffffff' : '#000000');
+            light.intensity = isOn ? .8 : .1;
+        }
+        // const isVisible = lights.visible;
+        // lights.visible = !isVisible;
+    });
+
     go(
         fourthFloorLights,
         map(makeCeilingLight),
-        reduce()
-    )
+    );
     // ceiling.add(lightGroup);
     floor.add(ceiling);
 
@@ -104,7 +122,7 @@ const makeOffice = async () => {
         const {x, y, z} = info.position;
         group.position.set(x, y, z);
         if (info.isReverse) group.rotation.y = Math.PI;
-        floor.add(group)
+        floor.add(group);
         return {info, group};
     };
     const makeSeat = (info) => go(

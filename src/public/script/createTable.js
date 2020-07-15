@@ -65,7 +65,7 @@ const createMeshTable = async () => {
     );
     mesh.table = tableMesh;
     return tableMesh;
-}
+};
 
 const createTable = ({info, group}) => {
     return new Promise(async resolve => {
